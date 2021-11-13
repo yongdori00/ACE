@@ -26,8 +26,8 @@ export default class App extends React.Component {
                     />
 
                     <Button
-                        title='공지 사항'
-                        onPress={() => Alert.alert('공지 사항으로 이동')}
+                        title='공지사항'
+                        onPress={() => Alert.alert('공지사항으로 이동')}
                     />
 
                     <Button
