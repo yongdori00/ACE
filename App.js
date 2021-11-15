@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     },
     row: {
         margin: 3,
-        flex: 2.5,
+        flex: 5,
         justifyContent: 'space-between',
         flexDirection: 'row',
     },
@@ -82,15 +82,15 @@ const styles = StyleSheet.create({
         textAlign: 'right',
     },
     list: {
-        flex: 2.5,
-        backgroundColor: '#AAAAAA',
+        flex: 5,
+        backgroundColor: '#cccccc',
         padding: 3,
         margin: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
     banner: {
-        flex: 20,
+        flex: 40,
         padding: 5,
     },
     seperator: {
