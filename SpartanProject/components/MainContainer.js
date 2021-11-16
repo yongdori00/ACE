@@ -1,11 +1,12 @@
 /* eslint-disable require-jsdoc */
 import React from 'react';
-import { StyleSheet, View, Alert, Button } from 'react-native';
+import { StyleSheet, View, Alert, Button, ScrollView, Dimensions,} from 'react-native';
 
 function Seperator() {
     return <View style={styles.seperator} />;
 }
 export default class App extends React.Component {
+  
     render() {
         return (
             <View style={styles.container}>
@@ -35,7 +36,7 @@ export default class App extends React.Component {
                         onPress={() => Alert.alert('팀으로 이동')}
                     />
                 </View>
-                <View style={styles.banner}>
+                <ScrollView style={styles.banner}>
                     <Button
                         title='배너 1'
                         onPress={() => Alert.alert('배너 1으로 이동')}
@@ -55,7 +56,7 @@ export default class App extends React.Component {
                         title='배너 4'
                         onPress={() => Alert.alert('배너 4으로 이동')}
                     />
-                </View>
+                </ScrollView>
             </View>
         );
     }
@@ -68,21 +69,20 @@ const styles = StyleSheet.create({
     },
     row: {
         margin: 3,
-        flex: 5,
+        height: Dimensions.get('window').height/10,
         justifyContent: 'space-between',
         flexDirection: 'row',
     },
     title: {
+      alignItems:'center',
         padding: 5,
-        backgroundColor: 'skyblue',
     },
     login: {
         padding: 5,
-        backgroundColor: 'green',
         textAlign: 'right',
     },
     list: {
-        flex: 5,
+      height: Dimensions.get('window').height/13,
         backgroundColor: '#cccccc',
         padding: 3,
         margin: 5,
@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     banner: {
-        flex: 40,
         padding: 5,
     },
     seperator: {
