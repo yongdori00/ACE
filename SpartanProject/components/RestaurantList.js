@@ -15,7 +15,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 export default class ScrollableRestaurantList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { order: 0, NameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
+    this.state = { order: 0, nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
   }
 
   render() {
@@ -42,7 +42,7 @@ export default class ScrollableRestaurantList extends React.Component {
               <Image style={styles.logo} source={require('./assets/image/test.png')}
               />
               <View >
-                <Text >가게 이름:{this.state.NameOfRestaurant}</Text>
+                <Text >가게 이름:{this.state.nameOfRestaurant}</Text>
                 <Text >최소 주문 수:{this.state.minimum}</Text>
                 <Text >최대 주문 수:{this.state.maximum}</Text>
                 <Text >현재 주문 수:{this.state.current}</Text>
@@ -54,7 +54,7 @@ export default class ScrollableRestaurantList extends React.Component {
                 uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==',
               }} />
               <View >
-                <Text >가게 이름:{this.state.NameOfRestaurant}</Text>
+                <Text >가게 이름:{this.state.nameOfRestaurant}</Text>
                 <Text >최소 주문 수:{this.state.minimum}</Text>
                 <Text >최대 주문 수:{this.state.maximum}</Text>
                 <Text >현재 주문 수:{this.state.current}</Text>

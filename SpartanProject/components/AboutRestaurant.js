@@ -17,7 +17,7 @@ export default class ScrollableAboutRestaurant extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { order: 0, NameOfRestaurant: "name", minimum: 0, maximum: 10, current: 0, Body:"" };
+    this.state = {order: 0, nameOfRestaurant: "name", minimum: 0, maximum: 10, current: 0, body:"", listPrice:0, discountedPrice:0, ceoComment:'뚝배기 좀 칩니데이~', location:'', operatingTime: 'time', contact:'nut_alrnond'};
   }
 
   render() {
@@ -35,8 +35,8 @@ export default class ScrollableAboutRestaurant extends React.Component {
         </View>
         <View style={styles.RestaurantList}>
           <Text>
-            {this.state.order}. {this.state.NameOfRestaurant}
-            Min:{this.state.minimum}명 | Max:{this.state.maximum}명
+            {this.state.order}. {this.state.nameOfRestaurant}{"\n"}
+            Min:{this.state.minimum}명 | Max:{this.state.maximum}명{"\n"}
             현재:{this.state.current}명이 예약했습니다!
           </Text>
         </View>
@@ -49,16 +49,22 @@ export default class ScrollableAboutRestaurant extends React.Component {
             <Image style={styles.logo} source={{
               uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==',
             }} />
-            <View>
+          </View>
+        </ScrollView>
+        <View>
               <Text>
                 소개
                 {this.state.body}
-                메뉴와 할인가를 소개합니다.
-                정가:{}
+                메뉴와 할인가를 소개합니다.{"\n"}
+                정가:{this.state.listPrice} → 할인가:{this.state.discountedPrice}{"\n\n\n"}
+                사장님의 한마디!{"\n"}
+                {this.state.ceoComment}{"\n\n\n"}
+                정보{"\n\n"}
+                주소:{this.state.location}{"\n"}
+                영업시간:{this.state.operatingTime}{"\n"}
+                연락처/sns:{this.state.contact}{"\n"}
               </Text>
             </View>
-          </View>
-        </ScrollView>
       </View>
     );
   }
@@ -71,7 +77,6 @@ const styles = StyleSheet.create({
   },
   RestaurantList: {
     width: wp('100%'),  // 스크린 가로 크기 100%
-    height: Dimensions.get('window').height / 15, // 스크린 세로 크기 50%
     fontSize: Dimensions.get('window').width / 10
   },
   row: {
@@ -93,7 +98,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   list: {
-    flex: 1,
     width: "100%",
     backgroundColor: "#f2f2f2",
   },
