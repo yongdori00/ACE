@@ -1,24 +1,24 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {
   TouchableOpacity,
-  TouchableHighlight,
   Image,
   View,
   Text,
   StyleSheet,
   ScrollView,
   Dimensions,
-  Button
+  Button,
+  Alert
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import testImage from './assets/image/test.jpg';
 
 export default class IScrolledDownAndWhatHappenedNextShockedMe extends React.Component {
-    render() {
-      let NameOfRestaurant = "멘동";
-      let minimum = 0;
-      let maximum = -1;
-      let current = 10;
+  constructor(props){
+    super(props);
+    this.state = {order:0, NameOfRestaurant:"", minimum:0, maximum:10, current:0};
+  }
+  
+  render() {
         return (
         <View style={styles.container}>
         <View style={styles.row}>
@@ -38,17 +38,27 @@ export default class IScrolledDownAndWhatHappenedNextShockedMe extends React.Com
         </View>
           <ScrollView horizontal={false} style={styles.list}>
             <View style={styles.stylegridView}>
-            <TouchableOpacity  style={styles.card} onPress={()=>{Alert.alert('다음페이지')}}>
-               <Image style={styles.logo} source={{
-          uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==',}} />
+            <TouchableOpacity  style={styles.card} onPress={()=>Alert.alert('다음페이지')}>
+               <Image style={styles.logo} source={require('./assets/image/test.png')}
+          />
                <View >
-                   <Text >가게 이름:{NameOfRestaurant}</Text>
-                   <Text >최소 주문 수:{minimum}</Text>
-                   <Text >최대 주문 수:{maximum}</Text>
-                   <Text >현재 주문 수:{current}</Text>
+                   <Text >가게 이름:{this.state.NameOfRestaurant}</Text>
+                   <Text >최소 주문 수:{this.state.minimum}</Text>
+                   <Text >최대 주문 수:{this.state.maximum}</Text>
+                   <Text >현재 주문 수:{this.state.current}</Text>
                   </View>
             </TouchableOpacity>
             
+            <TouchableOpacity  style={styles.card} onPress={()=>Alert.alert('다음페이지')}>
+               <Image style={styles.logo} source={{
+          uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==',}} />
+               <View >
+                   <Text >가게 이름:{this.state.NameOfRestaurant}</Text>
+                   <Text >최소 주문 수:{this.state.minimum}</Text>
+                   <Text >최대 주문 수:{this.state.maximum}</Text>
+                   <Text >현재 주문 수:{this.state.current}</Text>
+                  </View>
+            </TouchableOpacity>
             </View>
           </ScrollView>
         </View>
