@@ -4,7 +4,7 @@ import RestaurantList from './components/RestaurantList'
 import AboutRestaurant from './components/AboutRestaurant'
 
 const IScrolledDownAndWhatHappenedNextShockedMe = () => {
-  return <RestaurantList />;
+  return <AboutRestaurant />;
 };
 
 export default IScrolledDownAndWhatHappenedNextShockedMe;
