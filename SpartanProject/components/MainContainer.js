@@ -1,24 +1,30 @@
 /* eslint-disable require-jsdoc */
 import React from 'react';
-import { StyleSheet, View, Alert, Button, ScrollView, Dimensions,} from 'react-native';
+import { StyleSheet, View, Alert, Button, ScrollView, Dimensions, } from 'react-native';
 
 function Seperator() {
     return <View style={styles.seperator} />;
 }
 export default class App extends React.Component {
-  
+
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.row}>
-                    <Button style={styles.title}
-                        title='SSUFUN'
-                        onPress={() => Alert.alert('홈으로 이동')}
-                    />
-                    <Button style={styles.login}
-                        title='회원가입 / 로그인'
-                        onPress={() => Alert.alert('회원가입 / 로그인')}
-                    />
+                    <TouchableOpacity>
+                        <Text style={styles.logo}
+                            onPress={() => Alert.alert('홈으로 이동')}
+                        >
+                            SSUFUN
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Text style={styles.login}
+                            onPress={() => Alert.alert('회원가입 / 로그인')}
+                        >
+                            회원가입 / 로그인
+                        </Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.list}>
                     <Button
@@ -69,12 +75,12 @@ const styles = StyleSheet.create({
     },
     row: {
         margin: 3,
-        height: Dimensions.get('window').height/10,
+        height: Dimensions.get('window').height / 10,
         justifyContent: 'space-between',
         flexDirection: 'row',
     },
     title: {
-      alignItems:'center',
+        alignItems: 'center',
         padding: 5,
     },
     login: {
@@ -82,7 +88,7 @@ const styles = StyleSheet.create({
         textAlign: 'right',
     },
     list: {
-      height: Dimensions.get('window').height/13,
+        height: Dimensions.get('window').height / 13,
         backgroundColor: '#cccccc',
         padding: 3,
         margin: 5,

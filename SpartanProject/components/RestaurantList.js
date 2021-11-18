@@ -22,14 +22,20 @@ export default class ScrollableRestaurantList extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.row}>
-          <Button style={styles.title}
-            title='SSUFUN'
-            onPress={() => Alert.alert('홈으로 이동')}
-          />
-          <Button style={styles.login}
-            title='회원가입 / 로그인'
-            onPress={() => Alert.alert('회원가입 / 로그인')}
-          />
+          <TouchableOpacity>
+            <Text style={styles.logo}
+              onPress={() => Alert.alert('홈으로 이동')}
+            >
+              SSUFUN
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.login}
+              onPress={() => Alert.alert('회원가입 / 로그인')}
+            >
+              회원가입 / 로그인
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.RestaurantList}>
           <Text>

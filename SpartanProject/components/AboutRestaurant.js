@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
+  TouchableOpacity,
   Button,
   Alert
 } from 'react-native';
@@ -17,21 +18,27 @@ export default class ScrollableAboutRestaurant extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {order: 0, nameOfRestaurant: "name", minimum: 0, maximum: 10, current: 0, body:"", listPrice:0, discountedPrice:0, ceoComment:'뚝배기 좀 칩니데이~', location:'', operatingTime: 'time', contact:'nut_alrnond'};
+    this.state = { order: 0, nameOfRestaurant: "name", minimum: 0, maximum: 10, current: 0, body: "", listPrice: 0, discountedPrice: 0, ceoComment: '뚝배기 좀 칩니데이~', location: '', operatingTime: 'time', contact: 'nut_alrnond' };
   }
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.row}>
-          <Button style={styles.title}
-            title='SSUFUN'
+        <TouchableOpacity>
+          <Text style={styles.logo}
             onPress={() => Alert.alert('홈으로 이동')}
-          />
-          <Button style={styles.login}
-            title='회원가입 / 로그인'
+          >
+            SSUFUN
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+          <Text style={styles.login}
             onPress={() => Alert.alert('회원가입 / 로그인')}
-          />
+          >
+            회원가입 / 로그인
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.RestaurantList}>
           <Text>
@@ -52,19 +59,26 @@ export default class ScrollableAboutRestaurant extends React.Component {
           </View>
         </ScrollView>
         <View>
-              <Text>
-                소개
-                {this.state.body}
-                메뉴와 할인가를 소개합니다.{"\n"}
-                정가:{this.state.listPrice} → 할인가:{this.state.discountedPrice}{"\n\n\n"}
-                사장님의 한마디!{"\n"}
-                {this.state.ceoComment}{"\n\n\n"}
-                정보{"\n\n"}
-                주소:{this.state.location}{"\n"}
-                영업시간:{this.state.operatingTime}{"\n"}
-                연락처/sns:{this.state.contact}{"\n"}
-              </Text>
-            </View>
+          <Text>
+            소개
+            {this.state.body}
+            메뉴와 할인가를 소개합니다.{"\n"}
+            정가:{this.state.listPrice} → 할인가:{this.state.discountedPrice}{"\n\n\n"}
+            사장님의 한마디!{"\n"}
+            {this.state.ceoComment}{"\n\n\n"}
+            정보{"\n\n"}
+            주소:{this.state.location}{"\n"}
+            영업시간:{this.state.operatingTime}{"\n"}
+            연락처/sns:{this.state.contact}{"\n"}
+          </Text>
+        </View>
+        <TouchableOpacity style={styles.payBottom} onPress={() => Alert.alert("결제 창으로 이동")}>
+          <View style={styles.payButton}>
+            <Text>
+              결제
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -111,4 +125,15 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width / 2,
     height: Dimensions.get("window").height / 3,
   },
+  payBottom: {
+    height: Dimensions.get("window").height / 12,
+    alignItems: "flex-end",
+  },
+  payButton: {
+    backgroundColor: "skyblue",
+    alignItems: "center",
+    justifyContent: "center",
+    height: Dimensions.get("window").height / 14,
+    width: Dimensions.get("window").width / 4,
+  }
 });
