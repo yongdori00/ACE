@@ -32,7 +32,7 @@ public class Coupon {
 
     //필요없을듯?
     @Lob
-    private String dsecription;
+    private String description;
 
     @Enumerated(EnumType.STRING)
     private CouponStatus couponStatus;

@@ -9,10 +9,12 @@ import TeamAce.AceProject.repository.FundingRepository;
 import TeamAce.AceProject.repository.RestaurantRepository;
 import TeamAce.AceProject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Pageable;
 import java.util.Optional;
 
 @Service
@@ -39,6 +41,15 @@ public class FundingService {
         Funding findFunding = fundingRepository.findById(id).get();
         FundingDto fundingDto = findFunding.toDto(findFunding);
         return fundingDto;
+    }
+
+    //펀딩리스트들 넘겨주기
+    public Slice<FundingDto> getFundingList(Pageable pageable){
+        Slice<Funding> fundingList = fundingRepository.findAll(pageable);
+        //되는가???
+        Slice<FundingDto> fundingDtoList = fundingList.map(funding -> funding.toDto(funding));
+
+        return fundingDtoList;
     }
 
 
@@ -89,10 +100,5 @@ public class FundingService {
         }
 
     }
-
-
-
-
-
 
 }

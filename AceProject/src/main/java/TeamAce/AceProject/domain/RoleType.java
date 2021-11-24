@@ -1,5 +1,5 @@
 package TeamAce.AceProject.domain;
 
 public enum RoleType {
-    NORMAL,SUBSCRIBER
+    ASSOCIATE,REGULAR,SUBSCRIBER,ADMIN
 }
