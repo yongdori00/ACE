@@ -28,8 +28,7 @@ export default class ScrollableRestaurantList extends React.Component {
         <View style={styles.row}>
           <TouchableOpacity>
             <Text style={styles.logo}
-              onPress={() => this.props.navigation.navigate('Home')}
-            >
+              onPress={() => this.props.navigation.navigate('Home')}>
               SSUFUN
             </Text>
           </TouchableOpacity>

@@ -14,6 +14,8 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import RestaurantList from './RestaurantList';
 import AboutRestaurant from './AboutRestaurant';
+import Mypage from './Mypage';
+import Signup from './Signup';
 import Notice from './Notice';
 import axios from 'axios';
 
@@ -25,17 +27,20 @@ class App extends React.Component {
   //변경 가능한 변수 생성(생성자 이용)
   constructor(props) {
   super(props);
-  this.state = { isLoggedIn: false, nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
+  this.state = { isLoggedIn: false, isLoggedInPage = 'SignUp', nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
 }
   render() {
     //로그인 세션 get
     axios.get('임의의 값')
     .then(function(response){
-      if (isLoggedIn == true)
+      if (isLoggedIn == true){
         this.state.loginStatus = '마이페이지';
-      else
+        this.state.isLoggedInPage = 'Mypage';
+      }
+      else{
         this.state.loginStatus = '로그인/회원가입';
-      )
+        this.state.isLoggedInPage = 'Signup';
+      }})
     .catch(function(error){
       console.log(error);
     });
@@ -51,7 +56,7 @@ class App extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.login}
-            onPress={() => Alert.alert('회원가입 / 로그인')}>
+            onPress={() => this.props.navigation.navigate(isLoggedInPage)}>
             <Text>{loginStatus}</Text>
           </TouchableOpacity>
         </View>
@@ -122,6 +127,8 @@ const MainNavigator = createStackNavigator({
   RestList: RestaurantList,
   Notice:Notice,
   Home: App,
+  Signup: Signup,
+  Mypage: Mypage,
 }, 
 {
   initialRouteName: 'Home',
