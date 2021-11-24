@@ -6,6 +6,7 @@ import TeamAce.AceProject.domain.User;
 import TeamAce.AceProject.domain.UserFunding;
 import TeamAce.AceProject.dto.FundingDto;
 import TeamAce.AceProject.repository.FundingRepository;
+import TeamAce.AceProject.repository.FundingRepositoryImpl;
 import TeamAce.AceProject.repository.RestaurantRepository;
 import TeamAce.AceProject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.print.Pageable;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +28,7 @@ public class FundingService {
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private final CouponService couponService;
+
 
     //새로운 펀딩 만들기
     public void createFunding(FundingDto fundingDto){
@@ -45,7 +48,7 @@ public class FundingService {
 
     //펀딩리스트들 넘겨주기
     public Slice<FundingDto> getFundingList(Pageable pageable){
-        Slice<Funding> fundingList = fundingRepository.findAll(pageable);
+        Slice<Funding> fundingList = fundingRepository.findAll((org.springframework.data.domain.Pageable) pageable);
         //되는가???
         Slice<FundingDto> fundingDtoList = fundingList.map(funding -> funding.toDto(funding));
 
@@ -84,21 +87,24 @@ public class FundingService {
         }
     }
 
+
     //펀딩기간을 넘겼으면 min체크
     @Scheduled(cron = "0 0 0 * * *") // 매일 0시에 체크
-    public void checkFundingDate(Long fundingId){
-        Funding findFunding = fundingRepository.findById(fundingId).get();
+    public void checkFundingDate(){
+        //현재 진행중인 펀딩리스트들 가져옴
+        List<Funding> proceedingFunding = fundingRepository.findProceedingFunding();
 
-        if(findFunding.checkFundingDate() == true) { //기간이 지났다면
-            if (findFunding.checkMinFunding() == true) { //min을 넘겼다면
-                couponService.createCoupon(findFunding);
+        for (Funding funding : proceedingFunding) {
+            if(funding.checkFundingDate() == true) { //기간이 지났다면
+                if (funding.checkMinFunding() == true) { //min을 넘겼다면
+                    couponService.createCoupon(funding);
+                } else { //min을 못넘겼다면 , 유저에게 환불해줘야함
 
-            } else { //min을 못넘겼다면 , 유저에게 환불해줘야함
-
+                }
             }
-
         }
 
     }
+
 
 }

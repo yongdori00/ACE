@@ -18,14 +18,14 @@ public class FundingController {
     private final FundingService fundingService;
 
     //펀딩리스트들 제공
-    @GetMapping("/RestList")
+    //@GetMapping("/RestList")
     public Slice<FundingDto> viewFundingList(){
         Pageable pageable = (Pageable) PageRequest.of(0,5);
         return fundingService.getFundingList(pageable);
     }
 
     //펀딩페이지
-    @GetMapping("/RestList/RestInformation")
+    //@GetMapping("/RestList/RestInformation")
     public FundingDto viewFundingInformation(@RequestBody Long id){
         return fundingService.getFunding(id);
     }

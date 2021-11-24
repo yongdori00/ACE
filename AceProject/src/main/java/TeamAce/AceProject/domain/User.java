@@ -89,10 +89,11 @@ public class User {
     }
 
     //구독결제를 하면 roleType udpate
+    //구독결제를 취소하면 roleType update
     public void updateRoleTypeForPayment(){
         if(this.roleType == RoleType.REGULAR)
             this.roleType = RoleType.SUBSCRIBER;
-        else
+        else if(this.roleType == RoleType.SUBSCRIBER)
             this.roleType = RoleType.REGULAR;
     }
 }

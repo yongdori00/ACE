@@ -23,14 +23,14 @@ public class UserController {
     private final UserService userService;
 
     //아이디 중복체크
-    @GetMapping("")
+    //@GetMapping
     public ResponseEntity<Boolean> checkLoginIdDuplicate(@PathVariable String loginId) {
         //true -> 아이디중복 , false -> 아이디중복 없음
         return ResponseEntity.ok(userService.checkLoginIdDuplicate(loginId));
     }
 
     //내정보
-    @GetMapping("/mypage")
+    //@GetMapping
     public UserDto viewMyPage(
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser
     ) {
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     //내정보 속 쿠폰함
-    @GetMapping()
+    //@GetMapping
     public List<CouponDto> viewMyCouponList(
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser
     ){
@@ -46,7 +46,7 @@ public class UserController {
     }
 
     //회원가입
-    @PostMapping
+    //@PostMapping
     public void createUser(@Valid @RequestBody UserDto userDto , BindingResult result) throws Exception {
         if(result.hasErrors()){
             //오류가있으면
@@ -55,19 +55,19 @@ public class UserController {
     }
 
     //아이디 찾기
-    @GetMapping
+    //@GetMapping
     public String findLoginId(@RequestBody FindLoginIdDto findLoginIdDto){
         return userService.findLoginId(findLoginIdDto);
     }
 
     //비밀번호 찾기
-    @GetMapping
+    //@GetMapping
     public String findPassword(@RequestBody FindPasswordDto findPasswordDto){
         return userService.findPassword(findPasswordDto);
     }
 
     //이메일인증
-    @PostMapping
+    //@PostMapping
     public void authenticationEmail(
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser,
             @RequestBody String authenticationKey
