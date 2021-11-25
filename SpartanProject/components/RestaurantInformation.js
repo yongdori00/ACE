@@ -14,6 +14,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import axios from './axios';
 
 //각 폰트들의 색이랑 크기 조절은 해야합니다.
 
@@ -37,6 +38,19 @@ export default class ScrollableAboutRestaurant extends React.Component {
   }
 
   render() {
+    axios.get('/RestInfo')
+      .then(function(response){
+        if (isLoggedIn == true){
+          this.state.loginStatus = '마이페이지';
+          this.state.isLoggedInPage = 'Mypage';
+        }
+        else{
+          this.state.loginStatus = '로그인/회원가입';
+          this.state.isLoggedInPage = 'Login';
+        }})
+      .catch(function(error){
+        console.log(error);
+      });
     return (
       <View style={styles.container}>
         <View style={styles.row}>
