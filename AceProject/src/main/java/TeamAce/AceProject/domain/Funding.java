@@ -28,7 +28,7 @@ public class Funding {
     private LocalDateTime endDate;
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
@@ -44,7 +44,7 @@ public class Funding {
 
     @Builder
     public Funding(Long id , String restaurantName , String menu , int discountPrice , int price, int minFundingCount, int maxFundingCount, int nowFundingCount,
-                   LocalDateTime startDate ,  LocalDateTime endDate , FundingStatus fundingStatus){
+                   LocalDateTime startDate ,  LocalDateTime endDate , FundingStatus fundingStatus , IsFundingSuccess isFundingSuccess){
         this.id = id;
         this.restaurantName = restaurantName;
         this.menu = menu;
@@ -52,10 +52,11 @@ public class Funding {
         this.discountPrice = discountPrice;
         this.minFundingCount = minFundingCount;
         this.maxFundingCount = maxFundingCount;
-        this.nowFundingCount = 0;
+        this.nowFundingCount = nowFundingCount;
         this.startDate = startDate;
         this.endDate = endDate;
         this.fundingStatus = fundingStatus;
+        this.isFundingSuccess = isFundingSuccess;
 
     }
 

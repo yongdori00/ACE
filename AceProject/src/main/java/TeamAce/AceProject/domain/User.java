@@ -1,9 +1,7 @@
 package TeamAce.AceProject.domain;
 
 import TeamAce.AceProject.dto.UserDto;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.management.relation.Role;
 import javax.persistence.*;
@@ -12,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id
@@ -31,11 +30,11 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Coupon> coupons = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @JoinColumn(name = "subscription_id")
     private Subscription mySubscription;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
     private List<UserFunding> userFundings = new ArrayList<>();
 
     @Builder
@@ -48,8 +47,6 @@ public class User {
         this.roleType = roleType;
     }
 
-    protected User() {
-    }
 
     public UserDto toDto(User user) {
         UserDto userDto = UserDto.builder()
