@@ -14,7 +14,8 @@
     "react": "17.0.2",
     "react-native": "^0.66.3",
     "react-native-responsive-screen": "^1.4.2",
-    "react-native-screens": "^3.9.0"
+    "react-native-screens": "^3.9.0",
+    "react-native-textinput-effects": "^0.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
