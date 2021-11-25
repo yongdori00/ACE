@@ -24,7 +24,6 @@ public class FundingDto {
     private LocalDateTime endDate;
 
     //가게주인?
-
     public Funding toEntityFirst(){
         Funding build = Funding.builder()
                 .restaurantName(restaurantName)

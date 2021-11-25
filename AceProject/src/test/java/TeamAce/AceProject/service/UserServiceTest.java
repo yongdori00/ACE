@@ -49,8 +49,9 @@ public class UserServiceTest {
         System.out.println("saveUser.getRoleType() = " + saveUser.getRoleType());
         assertThat(saveUser.getRoleType()).isNotEqualTo(user.getRoleType());
     }
-
     //아이디중복테스트
+
+
 
     //회원중복테스트
 }

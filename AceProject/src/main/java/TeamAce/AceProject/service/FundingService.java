@@ -48,7 +48,7 @@ public class FundingService {
 
     //펀딩리스트들 넘겨주기
     public Slice<FundingDto> getFundingList(Pageable pageable){
-        Slice<Funding> fundingList = fundingRepository.findAll((org.springframework.data.domain.Pageable) pageable);
+        Slice<Funding> fundingList = fundingRepository.findAllCustom((org.springframework.data.domain.Pageable) pageable);
         //되는가???
         Slice<FundingDto> fundingDtoList = fundingList.map(funding -> funding.toDto(funding));
 

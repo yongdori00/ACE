@@ -59,8 +59,8 @@ public class BoardService {
 
     //게시글 수정
     @Transactional
-    public BoardDto updateBoard(Long id , BoardDto boardDto){
-        Board board = boardRepository.findById(id).get();
+    public BoardDto updateBoard(BoardDto boardDto){
+        Board board = boardRepository.findById(boardDto.getId()).get();
         board.updateBoard(boardDto);
         Board updatedBoard = boardRepository.save(board);
         BoardDto updatedBoardDto = updatedBoard.toDto();

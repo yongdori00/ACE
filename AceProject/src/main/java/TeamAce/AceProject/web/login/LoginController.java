@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,13 +19,14 @@ public class LoginController {
     private final LoginService loginService;
 
     //로그인
-    @GetMapping("/login")
-    public String loginForm(@ModelAttribute LoginForm form){
+    //@GetMapping("/login")
+    public String loginForm(@RequestBody LoginForm form){
         return "";
     }
 
-    @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginForm form,
+    //로그인
+    //@PostMapping("/login")
+    public String login(@Valid @RequestBody LoginForm form,
                         BindingResult bindingResult,
                         @RequestParam(value = "redirectURL" , required = false) String redirectUrl,
                         HttpServletRequest request){
@@ -44,6 +42,7 @@ public class LoginController {
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER , loginUser);
+        //원래있던 화면으로 돌아가게
         if(redirectUrl==null)
             return "redirect:/";
         else
