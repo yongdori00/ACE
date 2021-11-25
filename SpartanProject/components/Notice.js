@@ -4,20 +4,40 @@ import {
   View,
   Alert,
   Button,
-  ScrollView,
+  FlatList,
   Dimensions,
   Text,
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import axios from 'axios';
 
-function Seperator() {
-  return <View style={styles.seperator} />;
-}
-export default class App extends React.Component {
+export default class Notice extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isLoggedIn: false, isLoggedInPage : 'SignUp', loginStatus: '마이페이지', nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
+  }
+
   render() {
+    axios.get('/RestList')
+    .then(function(response){
+      if (isLoggedIn == true){
+        this.state.loginStatus = '마이페이지';
+        this.state.isLoggedInPage = 'Mypage';
+      }
+      else{
+        this.state.loginStatus = '로그인/회원가입';
+        this.state.isLoggedInPage = 'Signup';
+      }})
+    .catch(function(error){
+      console.log(error);
+    });
+
+    loadMainText = () =>{
+
+    }
+
     return (
       <View style={styles.container}>
         <View style={styles.row}>
@@ -28,108 +48,78 @@ export default class App extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.login}
-            onPress={() => Alert.alert('회원가입 / 로그인')}>
-            <Text>회원가입 / 로그인</Text>
+            onPress={() => this.props.navigation.navigate(this.state.isLoggedInPage)}>
+            <Text>{this.state.loginStatus}</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.list}>
-          <Button
-            title="식당"
-            color="#006894"
-            onPress={() => this.props.navigation.navigate('RestList')}
-          />
-
-          <Button
-            title="공지사항"
-            color="#009bcb"
-            onPress={() => this.props.navigation.navigate('Notice')}
-          />
-
-          <Button
-            title="팀"
-            color="#5ec1c3"
-            onPress={() => Alert.alert('팀으로 이동')}
-          />
+        <View style={styles.RestaurantList}>
+          <Text>
+            N O T I C E
+          </Text>
         </View>
-        <ScrollView horizontal={false} style={styles.banner}>
-          <TouchableOpacity
-            title="배너 1"
-            onPress={() => Alert.alert('배너 1으로 이동')}>
-            <Image
-              style={styles.logo}
-              source={require('./assets/image/banner1.png')}
-            />
-          </TouchableOpacity>
-          <Seperator />
-          <TouchableOpacity
-            title="배너 2"
-            onPress={() => Alert.alert('배너 2으로 이동')}>
-            <Image
-              style={styles.logo}
-              source={require('./assets/image/banner1.png')}
-            />
-          </TouchableOpacity>
-          <Seperator />
-          <TouchableOpacity
-            title="배너 3"
-            onPress={() => Alert.alert('배너 3으로 이동')}>
-            <Image
-              style={styles.logo}
-              source={require('./assets/image/banner1.png')}
-            />
-          </TouchableOpacity>
-          <Seperator />
-          <TouchableOpacity
-            title="배너 4"
-            onPress={() => Alert.alert('배너 4으로 이동')}>
-            <Image
-              style={styles.logo}
-              source={require('./assets/image/banner1.png')}
-            />
-          </TouchableOpacity>
-        </ScrollView>
+        <FlatList horizontal={false} style={styles.list}>
+          <View style={styles.stylegridView}>
+            <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate('RestInfo')}>
+              <Image style={styles.logo} source={require('./assets/image/test.png')}
+              />
+              <View >
+                <Text >가게 이름:{this.state.nameOfRestaurant}</Text>
+                <Text >최소 주문 수:{this.state.minimum}</Text>
+                <Text >최대 주문 수:{this.state.maximum}</Text>
+                <Text >현재 주문 수:{this.state.current}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </FlatList>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
-    padding: 3,
+  },
+  RestaurantList: {
+    backgroundColor: 'aqua',
+    width: wp('100%'),  // 스크린 가로 크기 100%
+    height: 75, // 스크린 세로 크기 50%
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: Dimensions.get('window').width / 10
   },
   row: {
-    height: Dimensions.get('window').height / 15,
+    top: 0,
+    height: Dimensions.get('window').height / 10,
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
   title: {
-    alignItems: 'center',
     padding: 5,
   },
   login: {
     padding: 5,
     textAlign: 'right',
   },
+  stylegridView: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
   list: {
-    height: Dimensions.get('window').height / 10,
-    backgroundColor: '#cccccc',
-    padding: 3,
-    margin: 5,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  banner: {
-    margin: 5,
-    padding: 5,
-  },
-  seperator: {
-    alignItems: 'center',
-    backgroundColor: '#EEEEEE',
-    padding: 5,
+    flex: 1,
+    width: "100%",
+    backgroundColor: "#f2f2f2",
   },
   logo: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height / 5,
+    width: Dimensions.get("window").width / 2,
+    height: Dimensions.get("window").height / 5,
+  },
+  card: {
+    alignItems: "center",
+    fontSize: Dimensions.get("window").width / 30,
+    width: Dimensions.get("window").width / 2,
+    height: Dimensions.get("window").height / 3,
   },
 });

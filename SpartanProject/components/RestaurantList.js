@@ -11,9 +11,7 @@ import {
   Alert
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import AboutRestaurant from './AboutRestaurant';
+import axios from 'axios';
 
 export default class ScrollableRestaurantList extends React.Component {
 
@@ -23,6 +21,21 @@ export default class ScrollableRestaurantList extends React.Component {
   }
 
   render() {
+
+    axios.get('/RestList')
+    .then(function(response){
+      if (isLoggedIn == true){
+        this.state.loginStatus = '마이페이지';
+        this.state.isLoggedInPage = 'Mypage';
+      }
+      else{
+        this.state.loginStatus = '로그인/회원가입';
+        this.state.isLoggedInPage = 'Signup';
+      }})
+    .catch(function(error){
+      console.log(error);
+    });
+
     return (
       <View style={styles.container}>
         <View style={styles.row}>
@@ -47,21 +60,9 @@ export default class ScrollableRestaurantList extends React.Component {
         </View>
         <ScrollView horizontal={false} style={styles.list}>
           <View style={styles.stylegridView}>
-            <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate('RestAbout')}>
+            <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate('RestInfo')}>
               <Image style={styles.logo} source={require('./assets/image/test.png')}
               />
-              <View >
-                <Text >가게 이름:{this.state.nameOfRestaurant}</Text>
-                <Text >최소 주문 수:{this.state.minimum}</Text>
-                <Text >최대 주문 수:{this.state.maximum}</Text>
-                <Text >현재 주문 수:{this.state.current}</Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.card} onPress={() => Alert.alert('다음페이지')}>
-              <Image style={styles.logo} source={{
-                uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==',
-              }} />
               <View >
                 <Text >가게 이름:{this.state.nameOfRestaurant}</Text>
                 <Text >최소 주문 수:{this.state.minimum}</Text>
