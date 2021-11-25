@@ -15,7 +15,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 import RestaurantList from './RestaurantList';
 import RestaurantInformation from './RestaurantInformation';
 import Mypage from './Mypage';
-import Signup from './Signup';
+import Login from './Login';
+import Register from './Register';
 import Notice from './Notice';
 import axios from 'axios';
 
@@ -27,7 +28,7 @@ class App extends React.Component {
   //변경 가능한 변수 생성(생성자 이용)
   constructor(props) {
   super(props);
-  this.state = { isLoggedIn: false, isLoggedInPage : 'SignUp', loginStatus: '마이페이지', nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
+  this.state = { isLoggedIn: false, isLoggedInPage : 'Login', loginStatus: '로그인/회원가입', nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
 }
   render() {
     //로그인 세션 get
@@ -39,7 +40,7 @@ class App extends React.Component {
       }
       else{
         this.state.loginStatus = '로그인/회원가입';
-        this.state.isLoggedInPage = 'Signup';
+        this.state.isLoggedInPage = 'Login';
       }})
     .catch(function(error){
       console.log(error);
@@ -127,8 +128,9 @@ const MainNavigator = createStackNavigator({
   RestList: RestaurantList,
   Notice:Notice,
   Home: App,
-  /*Signup: Signup,
-  Mypage: Mypage,*/
+  Register: Register,
+  Login: Login,
+  Mypage: Mypage,
 }, 
 {
   initialRouteName: 'Home',

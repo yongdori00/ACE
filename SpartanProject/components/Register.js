@@ -14,13 +14,27 @@ function Seperator() {
   return <View style={styles.seperator} />;
 }
 export default class App extends React.Component {
+
+  createTwoButtonAlert = () =>
+    Alert.alert(
+      "돌아가시겠습니까?",
+      "저장되지 않습니다.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => this.props.navigation.navigate('Home') }
+      ]
+    );
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.row}>
-          <TouchableOpacity
+        <TouchableOpacity
             style={styles.title}
-            onPress={() => Alert.alert('홈으로 이동')}>
+            onPress = {this.createTwoButtonAlert}>
             <Text> SSUFUN </Text>
           </TouchableOpacity>
         </View>

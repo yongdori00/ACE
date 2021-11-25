@@ -2,7 +2,6 @@ import React from 'react';
 import MainComponent from './components/MainContainer';
 import RestaurantList from './components/RestaurantList';
 import RestaurantInformation from './components/RestaurantInformation';
-
 import Login from './components/Login';
 import Register from './components/Register';
 import { createAppContainer } from 'react-navigation';

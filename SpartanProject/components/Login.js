@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Button,
 } from 'react-native';
 
 function Seperator() {
@@ -17,9 +18,9 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.row}>
-          <TouchableOpacity
+        <TouchableOpacity
             style={styles.title}
-            onPress={() => Alert.alert('홈으로 이동')}>
+            onPress={() => this.props.navigation.navigate('Home')}>
             <Text> SSUFUN </Text>
           </TouchableOpacity>
         </View>
@@ -50,18 +51,19 @@ export default class App extends React.Component {
             blurOnSubmit={false}
           />
         </View>
-        <View style={styles.Btnrow}>
+        <View style={styles.regi_find}>
           <TouchableOpacity
-            //style={styles.button}
-            onPress={() => Alert.alert('아이디/비밀번호 찾기')}>
-            <Text>아이디/비밀번호 찾기</Text>
+            onPress={() => this.props.navigation.navigate('Register')}>
+            <Text>회원가입{'\n'}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
-            onPress={() => Alert.alert('로그인')}>
-            <Text>로그인</Text>
+            onPress={() => Alert.alert('아이디/비밀번호 찾기')}>
+            <Text>아이디/비밀번호 찾기{'\n'}</Text>
           </TouchableOpacity>
         </View>
+          <Button
+            onPress={() => Alert.alert('로그인')}
+            title = "로그인"/>
       </View>
     );
   }
@@ -104,4 +106,7 @@ const styles = StyleSheet.create({
   button: {
     activeOpacity: 0.8,
   },
+  regi_find: {
+    alignItems: 'center',
+  }
 });
