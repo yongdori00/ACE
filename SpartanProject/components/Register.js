@@ -14,27 +14,22 @@ function Seperator() {
   return <View style={styles.seperator} />;
 }
 export default class App extends React.Component {
-
   createTwoButtonAlert = () =>
-    Alert.alert(
-      "돌아가시겠습니까?",
-      "저장되지 않습니다.",
-      [
-        {
-          text: "Cancel",
-          style: "cancel"
-        },
-        { text: "OK", onPress: () => this.props.navigation.navigate('Home') }
-      ]
-    );
+    Alert.alert('돌아가시겠습니까?', '저장되지 않습니다.', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => this.props.navigation.navigate('Home')},
+    ]);
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.row}>
-        <TouchableOpacity
+          <TouchableOpacity
             style={styles.title}
-            onPress = {this.createTwoButtonAlert}>
+            onPress={this.createTwoButtonAlert}>
             <Text> SSUFUN </Text>
           </TouchableOpacity>
         </View>
@@ -52,18 +47,25 @@ export default class App extends React.Component {
             underlineColorAndroid="#f000"
             blurOnSubmit={false}
           />
-          <TextInput
-            style={styles.textForm}
-            placeholder={'아이디'}
-            //onChangeText={(userId) => setUserId(userId)}
-            autoCapitalize="none"
-            returnKeyType="next"
-            //onSubmitEditing={() =>
-            //  passwordInputRef.current && passwordInputRef.current.focus()
-            //}
-            underlineColorAndroid="#f000"
-            blurOnSubmit={false}
-          />
+          <View style={{flexDirection: 'row'}}>
+            <TextInput
+              style={styles.idForm}
+              placeholder={'아이디'}
+              //onChangeText={(userId) => setUserId(userId)}
+              autoCapitalize="none"
+              returnKeyType="next"
+              //onSubmitEditing={() =>
+              //  passwordInputRef.current && passwordInputRef.current.focus()
+              //}
+              underlineColorAndroid="#f000"
+              blurOnSubmit={false}
+            />
+            <TouchableOpacity
+              style={styles.check}
+              onPress={() => alert('중복 체크')}>
+              <Text> 중복 확인 </Text>
+            </TouchableOpacity>
+          </View>
           <TextInput
             style={styles.textForm}
             placeholder={'비밀번호'}
@@ -100,6 +102,7 @@ export default class App extends React.Component {
             underlineColorAndroid="#f000"
             blurOnSubmit={false}
           />
+          {/*
           <TextInput
             style={styles.textForm}
             placeholder={'전화번호'}
@@ -111,7 +114,7 @@ export default class App extends React.Component {
             //}
             underlineColorAndroid="#f000"
             blurOnSubmit={false}
-          />
+          />*/}
           <TouchableOpacity
             style={styles.button}
             onPress={() => Alert.alert('회원가입')}>
@@ -151,6 +154,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     margin: 1,
   },
+  idForm: {
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 5,
+    margin: 1,
+    flex: 3,
+  },
   Btnrow: {
     //height: Dimensions.get('window').height / 10,
     justifyContent: 'space-between',
@@ -160,5 +170,13 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'row-reverse',
     margin: 5,
+  },
+  check: {
+    flex: 1,
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 5,
+    margin: 1,
+    justifyContent: 'center',
   },
 });
