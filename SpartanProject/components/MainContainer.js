@@ -24,27 +24,36 @@ function Seperator() {
   return <View style={styles.seperator} />;
 }
 class App extends React.Component {
-  
+
   //변경 가능한 변수 생성(생성자 이용)
   constructor(props) {
-  super(props);
-  this.state = { isLoggedIn: false, isLoggedInPage : 'Login', loginStatus: '로그인/회원가입', nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
-}
+    super(props);
+    this.state = { isLoggedIn: false, isLoggedInPage: 'Login', loginStatus: '로그인/회원가입' };
+    this.responseData;
+    this.bannerList = [];
+  }
   render() {
     //로그인 세션 get
     axios.get('/')
-    .then(function(response){
-      if (isLoggedIn == true){
-        this.state.loginStatus = '마이페이지';
-        this.state.isLoggedInPage = 'Mypage';
-      }
-      else{
-        this.state.loginStatus = '로그인/회원가입';
-        this.state.isLoggedInPage = 'Login';
-      }})
-    .catch(function(error){
-      console.log(error);
-    });
+      .then(function (response) {
+        //요청 데이터 처리
+        this.responseData = response.data;
+
+        for (let i = 0; i < response.data.bannerList.length; i++)
+          this.Banner.push(response.data.bannerList(i));
+
+        if (this.state.isLoggedIn == true) {
+          this.state.loginStatus = '마이페이지';
+          this.state.isLoggedInPage = 'Mypage';
+        }
+        else {
+          this.state.loginStatus = '로그인/회원가입';
+          this.state.isLoggedInPage = 'Login';
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
     //views
     return (
@@ -126,15 +135,15 @@ class App extends React.Component {
 const MainNavigator = createStackNavigator({
   RestInfo: RestaurantInformation,
   RestList: RestaurantList,
-  Notice:Notice,
+  Notice: Notice,
   Home: App,
   Register: Register,
   Login: Login,
   Mypage: Mypage,
-}, 
-{
-  initialRouteName: 'Home',
-}
+},
+  {
+    initialRouteName: 'Home',
+  }
 )
 
 //main navigator 생성자

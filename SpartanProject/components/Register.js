@@ -32,9 +32,9 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.row}>
-        <TouchableOpacity
+          <TouchableOpacity
             style={styles.title}
-            onPress = {this.createTwoButtonAlert}>
+            onPress={this.createTwoButtonAlert}>
             <Text> SSUFUN </Text>
           </TouchableOpacity>
         </View>

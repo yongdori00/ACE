@@ -16,25 +16,26 @@ import axios from 'axios';
 export default class Notice extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { isLoggedIn: false, isLoggedInPage : 'SignUp', loginStatus: '마이페이지', nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
+    this.state = { isLoggedIn: false, isLoggedInPage: 'SignUp', loginStatus: '마이페이지', nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
   }
 
   render() {
     axios.get('/RestList')
-    .then(function(response){
-      if (isLoggedIn == true){
-        this.state.loginStatus = '마이페이지';
-        this.state.isLoggedInPage = 'Mypage';
-      }
-      else{
-        this.state.loginStatus = '로그인/회원가입';
-        this.state.isLoggedInPage = 'Signup';
-      }})
-    .catch(function(error){
-      console.log(error);
-    });
+      .then(function (response) {
+        if (isLoggedIn == true) {
+          this.state.loginStatus = '마이페이지';
+          this.state.isLoggedInPage = 'Mypage';
+        }
+        else {
+          this.state.loginStatus = '로그인/회원가입';
+          this.state.isLoggedInPage = 'Signup';
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
-    loadMainText = () =>{
+    loadMainText = () => {
 
     }
 

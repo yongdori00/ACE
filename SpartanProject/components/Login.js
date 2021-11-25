@@ -18,7 +18,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.row}>
-        <TouchableOpacity
+          <TouchableOpacity
             style={styles.title}
             onPress={() => this.props.navigation.navigate('Home')}>
             <Text> SSUFUN </Text>
@@ -61,9 +61,9 @@ export default class App extends React.Component {
             <Text>아이디/비밀번호 찾기{'\n'}</Text>
           </TouchableOpacity>
         </View>
-          <Button
-            onPress={() => Alert.alert('로그인')}
-            title = "로그인"/>
+        <Button
+          onPress={() => Alert.alert('로그인')}
+          title="로그인" />
       </View>
     );
   }

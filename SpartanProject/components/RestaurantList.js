@@ -18,23 +18,39 @@ export default class ScrollableRestaurantList extends React.Component {
   constructor(props) {
     super(props);
     this.state = { order: 0, nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
+    this.data;
+  }
+
+  getData=() => {
+    axios.get('/RestList')
+    .then(function (response) {
+      this.data = response.data;
+      this.state.order = this.data.order;
+      this.state.minimum = this.data.minimum;
+      this.state.maximum = this.data.maximum;
+      this.state.current = this.data.current;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
   render() {
 
     axios.get('/RestList')
-    .then(function(response){
-      if (isLoggedIn == true){
-        this.state.loginStatus = '마이페이지';
-        this.state.isLoggedInPage = 'Mypage';
-      }
-      else{
-        this.state.loginStatus = '로그인/회원가입';
-        this.state.isLoggedInPage = 'Signup';
-      }})
-    .catch(function(error){
-      console.log(error);
-    });
+      .then(function (response) {
+        if (this.state.isLoggedIn == true) {
+          this.state.loginStatus = '마이페이지';
+          this.state.isLoggedInPage = 'Mypage';
+        }
+        else {
+          this.state.loginStatus = '로그인/회원가입';
+          this.state.isLoggedInPage = 'Signup';
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
     return (
       <View style={styles.container}>
@@ -58,7 +74,7 @@ export default class ScrollableRestaurantList extends React.Component {
             식당을 선택해주세요.
           </Text>
         </View>
-        <ScrollView horizontal={false} style={styles.list}>
+        <ScrollView horizontal={false} style={styles.list} on>
           <View style={styles.stylegridView}>
             <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate('RestInfo')}>
               <Image style={styles.logo} source={require('./assets/image/test.png')}
