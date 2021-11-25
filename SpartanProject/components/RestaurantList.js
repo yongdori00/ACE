@@ -11,8 +11,12 @@ import {
   Alert
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import AboutRestaurant from './AboutRestaurant';
 
 export default class ScrollableRestaurantList extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = { order: 0, nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
@@ -24,8 +28,7 @@ export default class ScrollableRestaurantList extends React.Component {
         <View style={styles.row}>
           <TouchableOpacity>
             <Text style={styles.logo}
-              onPress={() => Alert.alert('홈으로 이동')}
-            >
+              onPress={() => this.props.navigation.navigate('Home')}>
               SSUFUN
             </Text>
           </TouchableOpacity>
@@ -44,7 +47,7 @@ export default class ScrollableRestaurantList extends React.Component {
         </View>
         <ScrollView horizontal={false} style={styles.list}>
           <View style={styles.stylegridView}>
-            <TouchableOpacity style={styles.card} onPress={() => Alert.alert('다음페이지')}>
+            <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate('RestAbout')}>
               <Image style={styles.logo} source={require('./assets/image/test.png')}
               />
               <View >

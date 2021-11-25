@@ -12,40 +12,12 @@ import {
 } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import RestaurantList from './RestaurantList';
-import AboutRestaurant from './AboutRestaurant';
-import Mypage from './Mypage';
-import Signup from './Signup';
-import Notice from './Notice';
-import axios from 'axios';
 
 function Seperator() {
   return <View style={styles.seperator} />;
 }
-class App extends React.Component {
-  
-  //변경 가능한 변수 생성(생성자 이용)
-  constructor(props) {
-  super(props);
-  this.state = { isLoggedIn: false, isLoggedInPage = 'SignUp', nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
-}
+export default class App extends React.Component {
   render() {
-    //로그인 세션 get
-    axios.get('임의의 값')
-    .then(function(response){
-      if (isLoggedIn == true){
-        this.state.loginStatus = '마이페이지';
-        this.state.isLoggedInPage = 'Mypage';
-      }
-      else{
-        this.state.loginStatus = '로그인/회원가입';
-        this.state.isLoggedInPage = 'Signup';
-      }})
-    .catch(function(error){
-      console.log(error);
-    });
-
-    //views
     return (
       <View style={styles.container}>
         <View style={styles.row}>
@@ -56,8 +28,8 @@ class App extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.login}
-            onPress={() => this.props.navigation.navigate(isLoggedInPage)}>
-            <Text>{loginStatus}</Text>
+            onPress={() => Alert.alert('회원가입 / 로그인')}>
+            <Text>회원가입 / 로그인</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.list}>
@@ -121,24 +93,6 @@ class App extends React.Component {
   }
 }
 
-//화면 전환 navigator
-const MainNavigator = createStackNavigator({
-  RestAbout: AboutRestaurant,
-  RestList: RestaurantList,
-  Notice:Notice,
-  Home: App,
-  Signup: Signup,
-  Mypage: Mypage,
-}, 
-{
-  initialRouteName: 'Home',
-}
-)
-
-//main navigator 생성자
-export default createAppContainer(MainNavigator);
-
-//css
 const styles = StyleSheet.create({
   container: {
     flex: 1,
