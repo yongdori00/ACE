@@ -24,8 +24,10 @@ public class Restaurant {
     @Lob
     private String notice;
 
+    /*
     @OneToOne(mappedBy = "restaurant" , fetch = FetchType.LAZY)
     private Funding funding;
+     */
 
     @Builder
     public Restaurant(Long id , String restaurantName , String introduction , String information ,String notice){
@@ -36,7 +38,5 @@ public class Restaurant {
         this.notice = notice;
 
     }
-
-
 
 }

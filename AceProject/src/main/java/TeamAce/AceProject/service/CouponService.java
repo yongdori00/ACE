@@ -45,7 +45,6 @@ public class CouponService {
         return myCouponList;
     }
 
-
     //펀딩정보를 바탕으로 각 유저마다 쿠폰을 만들어주는 서비스
     @Transactional
     public void createCoupon(Funding funding){

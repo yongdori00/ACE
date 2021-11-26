@@ -27,8 +27,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user" , cascade =  CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user" , cascade =  CascadeType.ALL)
+    private List<Board> boardList = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @JoinColumn(name = "subscription_id")
@@ -38,13 +41,14 @@ public class User {
     private List<UserFunding> userFundings = new ArrayList<>();
 
     @Builder
-    public User(Long id, String name, String loginId, String password, String email, RoleType roleType) {
+    public User(Long id, String name, String loginId, String password, String email, RoleType roleType , String authenticationKey) {
         this.id = id;
         this.name = name;
         this.loginId = loginId;
         this.password = password;
         this.email = email;
         this.roleType = roleType;
+        this.authenticationKey = authenticationKey;
     }
 
 
@@ -74,7 +78,11 @@ public class User {
     public void setSubscription(Subscription subscription) {
         this.mySubscription = subscription;
         subscription.setSubscriber(this);
+    }
 
+    public void addBoard(Board board){
+        this.boardList.add(board);
+        board.setUser(this);
     }
 
     //==비즈니스 로직==//

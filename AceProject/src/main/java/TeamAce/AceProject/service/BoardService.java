@@ -1,8 +1,10 @@
 package TeamAce.AceProject.service;
 
 import TeamAce.AceProject.domain.Board;
+import TeamAce.AceProject.domain.User;
 import TeamAce.AceProject.dto.BoardDto;
 import TeamAce.AceProject.repository.BoardRepository;
+import TeamAce.AceProject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +18,16 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     //게시글 작성
     @Transactional
-    public Long saveBoard(BoardDto boardDto){
-        return boardRepository.save(boardDto.toEntity()).getId();
+    public Long saveBoard(Long userId , BoardDto boardDto){
+        User user = userRepository.findById(userId).get();
+        Board board = boardDto.toEntity();
+        user.addBoard(board);
+
+        return boardRepository.save(board).getId();
     }
 
     //게시글 보여주기

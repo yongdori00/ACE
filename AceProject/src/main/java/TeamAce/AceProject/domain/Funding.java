@@ -26,11 +26,19 @@ public class Funding {
     private String restaurantName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    @Lob
+    private String introduction;
+    @Lob
+    private String information;
+    @Lob
+    private String notice;
 
 
+    /*
     @OneToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+    */
 
     @OneToMany(mappedBy = "funding")
     private List<UserFunding> userFundings = new ArrayList<>();
@@ -44,7 +52,9 @@ public class Funding {
 
     @Builder
     public Funding(Long id , String restaurantName , String menu , int discountPrice , int price, int minFundingCount, int maxFundingCount, int nowFundingCount,
-                   LocalDateTime startDate ,  LocalDateTime endDate , FundingStatus fundingStatus , IsFundingSuccess isFundingSuccess){
+                   LocalDateTime startDate ,  LocalDateTime endDate , FundingStatus fundingStatus , IsFundingSuccess isFundingSuccess,
+                    String introduction , String information ,String notice
+    ){
         this.id = id;
         this.restaurantName = restaurantName;
         this.menu = menu;
@@ -57,6 +67,9 @@ public class Funding {
         this.endDate = endDate;
         this.fundingStatus = fundingStatus;
         this.isFundingSuccess = isFundingSuccess;
+        this.introduction = introduction;
+        this.information = information;
+        this.notice = notice;
 
     }
 
@@ -82,23 +95,11 @@ public class Funding {
         userFunding.setFunding(this);
     }
 
+    /*
     public void setRestaurant(Restaurant restaurant){
         this.restaurant = restaurant;
         restaurant.setFunding(this);
-    }
-
-
-    //==생성 메서드==// -> 연관관계 맺어주기
-    public static Funding createFunding(FundingDto fundingDto , Restaurant restaurant ,UserFunding...userFundings){
-
-        Funding funding = fundingDto.toEntity();
-        funding.setRestaurant(restaurant);
-        for (UserFunding userFunding : userFundings) {
-            funding.addUserFunding(userFunding);
-        }
-        return funding;
-
-    }
+    }     */
 
 
    //==비즈니스 로직==//
