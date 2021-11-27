@@ -3,13 +3,11 @@ import {
   StyleSheet,
   View,
   Alert,
-  Button,
   FlatList,
   Dimensions,
   Text,
   TouchableOpacity,
   ScrollView,
-  Image,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -37,7 +35,6 @@ export default class Notice extends React.Component {
       ],
     };
   }
-
   render() {
     axios
       .get('/RestList')
@@ -83,11 +80,11 @@ export default class Notice extends React.Component {
               return (
                 <TouchableOpacity
                   style={styles.itemView}
-                  onPress={() => alert(item.title, '로 이동')}>
+                  onPress={() => Alert.alert(item.title, '로 이동')}>
                   <View style={styles.itemList}>
-                    <Text style={styles.item}>{item.title}</Text>
-                    <Text style={styles.item}>{item.writer}</Text>
-                    <Text style={styles.item}>{item.date}</Text>
+                    <Text style={(styles.item, {flex: 2})}>{item.title}</Text>
+                    <Text style={(styles.item, {flex: 1})}>{item.writer}</Text>
+                    <Text style={(styles.item, {flex: 1})}>{item.date}</Text>
                   </View>
                 </TouchableOpacity>
               );
@@ -111,10 +108,9 @@ const styles = StyleSheet.create({
     fontSize: Dimensions.get('window').width / 10,
   },
   noticeList: {
-    borderColor: 'black',
+    marginTop: 10,
     borderWidth: 1,
-    margin: 10,
-    padding: 5,
+    borderColor: 'skyblue',
   },
   row: {
     top: 0,
@@ -139,14 +135,6 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#f2f2f2',
   },
-  noticeist: {
-    height: Dimensions.get('window').height / 10,
-    backgroundColor: '#cccccc',
-    padding: 3,
-    margin: 5,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   logo: {
     width: Dimensions.get('window').width / 2,
     height: Dimensions.get('window').height / 5,
@@ -158,21 +146,21 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height / 3,
   },
   itemView: {
+    height: Dimensions.get('window').height / 10,
     flexDirection: 'row',
+    padding: 5,
+    borderColor: 'skyblue',
     borderWidth: 1,
-    borderRadius: 4,
-    padding: 8,
-    marginBottom: 12,
   },
   itemList: {
-    padding: 3,
-    margin: 5,
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   item: {
-    margin: 2,
-    fontSize: 10,
+    //margin: 5,
+    textAlign: 'center',
     fontWeight: 'bold',
   },
 });
