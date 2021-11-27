@@ -65,6 +65,9 @@ export default class Team extends React.Component {
             <Text>{this.state.loginStatus}</Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.Notice}>
+          <Text>Team ACE</Text>
+        </View>
         <View style={styles.noticeList}>
           <FlatList
             horizontal={false}
@@ -72,8 +75,8 @@ export default class Team extends React.Component {
             renderItem={({item}) => {
               return (
                 <View style={styles.itemList}>
-                  <Text style={(styles.item, {flex: 1})}>{item.name}</Text>
-                  <Text style={(styles.item, {flex: 2})}>{item.email}</Text>
+                  <Text style={styles.item}>{item.name}</Text>
+                  <Text style={styles.item}>{item.email}</Text>
                 </View>
               );
             }}></FlatList>
@@ -99,6 +102,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderWidth: 1,
     borderColor: 'skyblue',
+    marginBottom: 10,
   },
   row: {
     top: 0,
@@ -137,7 +141,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height / 10,
     flexDirection: 'row',
     padding: 5,
-    borderColor: 'skyblue',
+    borderColor: 'aqua',
     borderWidth: 1,
   },
   itemList: {
@@ -147,8 +151,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   item: {
-    //margin: 5,
-    textAlign: 'center',
+    flex: 1,
+    padding: 5,
+    textAlign: 'left',
     fontWeight: 'bold',
   },
 });
