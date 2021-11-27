@@ -10,41 +10,50 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 import RestaurantList from './RestaurantList';
 import RestaurantInformation from './RestaurantInformation';
 import Mypage from './Mypage';
 import Login from './Login';
 import Register from './Register';
 import Notice from './Notice';
+import Team from './Team';
 import axios from 'axios';
 
 function Seperator() {
   return <View style={styles.seperator} />;
 }
 class App extends React.Component {
-  
   //변경 가능한 변수 생성(생성자 이용)
   constructor(props) {
-  super(props);
-  this.state = { isLoggedIn: false, isLoggedInPage : 'Login', loginStatus: '로그인/회원가입', nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
-}
+    super(props);
+    this.state = {
+      isLoggedIn: false,
+      isLoggedInPage: 'Login',
+      loginStatus: '로그인/회원가입',
+      nameOfRestaurant: '',
+      minimum: 0,
+      maximum: 10,
+      current: 0,
+    };
+  }
   render() {
     //로그인 세션 get
-    axios.get('/')
-    .then(function(response){
-      if (isLoggedIn == true){
-        this.state.loginStatus = '마이페이지';
-        this.state.isLoggedInPage = 'Mypage';
-      }
-      else{
-        this.state.loginStatus = '로그인/회원가입';
-        this.state.isLoggedInPage = 'Login';
-      }})
-    .catch(function(error){
-      console.log(error);
-    });
+    axios
+      .get('/')
+      .then(function (response) {
+        if (isLoggedIn == true) {
+          this.state.loginStatus = '마이페이지';
+          this.state.isLoggedInPage = 'Mypage';
+        } else {
+          this.state.loginStatus = '로그인/회원가입';
+          this.state.isLoggedInPage = 'Login';
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
     //views
     return (
@@ -57,7 +66,9 @@ class App extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.login}
-            onPress={() => this.props.navigation.navigate(this.state.isLoggedInPage)}>
+            onPress={() =>
+              this.props.navigation.navigate(this.state.isLoggedInPage)
+            }>
             <Text>{this.state.loginStatus}</Text>
           </TouchableOpacity>
         </View>
@@ -77,7 +88,7 @@ class App extends React.Component {
           <Button
             title="팀"
             color="#5ec1c3"
-            onPress={() => Alert.alert('팀으로 이동')}
+            onPress={() => this.props.navigation.navigate('Team')}
           />
         </View>
         <ScrollView horizontal={false} style={styles.banner}>
@@ -123,19 +134,21 @@ class App extends React.Component {
 }
 
 //화면 전환 navigator
-const MainNavigator = createStackNavigator({
-  RestInfo: RestaurantInformation,
-  RestList: RestaurantList,
-  Notice:Notice,
-  Home: App,
-  Register: Register,
-  Login: Login,
-  Mypage: Mypage,
-}, 
-{
-  initialRouteName: 'Home',
-}
-)
+const MainNavigator = createStackNavigator(
+  {
+    RestInfo: RestaurantInformation,
+    RestList: RestaurantList,
+    Notice: Notice,
+    Home: App,
+    Register: Register,
+    Login: Login,
+    Mypage: Mypage,
+    Team: Team,
+  },
+  {
+    initialRouteName: 'Home',
+  },
+);
 
 //main navigator 생성자
 export default createAppContainer(MainNavigator);
