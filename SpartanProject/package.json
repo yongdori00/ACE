@@ -35,5 +35,5 @@
   },
   "jest": {
     "preset": "react-native"
-  }
+  },"proxy" : "*:8080"
 }
