@@ -1,12 +1,12 @@
 package TeamAce.AceProject.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Restaurant {
 
     @Id @GeneratedValue
@@ -24,10 +24,19 @@ public class Restaurant {
     @Lob
     private String notice;
 
+    /*
     @OneToOne(mappedBy = "restaurant" , fetch = FetchType.LAZY)
     private Funding funding;
+     */
 
+    @Builder
+    public Restaurant(Long id , String restaurantName , String introduction , String information ,String notice){
+        this.id = id;
+        this.restaurantName = restaurantName;
+        this.information = information;
+        this.introduction = introduction;
+        this.notice = notice;
 
-
+    }
 
 }

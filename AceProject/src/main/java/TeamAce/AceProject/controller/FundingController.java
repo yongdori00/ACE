@@ -1,5 +1,6 @@
 package TeamAce.AceProject.controller;
 
+import TeamAce.AceProject.dto.ApplyFundingDto;
 import TeamAce.AceProject.dto.FundingDto;
 import TeamAce.AceProject.service.FundingService;
 import lombok.RequiredArgsConstructor;
@@ -20,17 +21,27 @@ public class FundingController {
     //펀딩리스트들 제공
     //@GetMapping("/RestList")
     public Slice<FundingDto> viewFundingList(){
-        Pageable pageable = (Pageable) PageRequest.of(0,5);
+        Pageable pageable = (Pageable) PageRequest.of(0,6);
         return fundingService.getFundingList(pageable);
     }
 
     //펀딩페이지
     //@GetMapping("/RestList/RestInformation")
-    public FundingDto viewFundingInformation(@RequestBody Long id){
-        return fundingService.getFunding(id);
+    public FundingDto viewFundingInformation(@RequestBody Long fundingId){
+        return fundingService.getFunding(fundingId);
     }
 
     //펀딩참여하기
+    //@PostMapping
+    public void applyFunding(@RequestBody ApplyFundingDto applyFundingDto){
+
+        if(fundingService.checkMaxFundingCount(applyFundingDto.getFundingId())){ //max에 도달했다면
+            return;
+        }
+        fundingService.addUserFunding(applyFundingDto.getUserId(),applyFundingDto.getFundingId());
+        fundingService.addNowFundingCount(applyFundingDto.getFundingId());
+    }
+
 
 
 }

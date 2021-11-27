@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 @RestController
 public class HomeController {
-    @RequestMapping("/url")
+
+    //@RequestMapping("/url")
     public String home(
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) User loginUser
     ){

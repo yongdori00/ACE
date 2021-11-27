@@ -1,16 +1,13 @@
 package TeamAce.AceProject.domain;
 
 import TeamAce.AceProject.dto.BoardDto;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends TimeEntity{
 
@@ -24,6 +21,10 @@ public class Board extends TimeEntity{
 
     @Lob
     private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Builder
     public Board(Long id ,  String title,String content , String writer){

@@ -1,13 +1,12 @@
 package TeamAce.AceProject.controller;
 
+import TeamAce.AceProject.domain.User;
 import TeamAce.AceProject.dto.BoardDto;
 import TeamAce.AceProject.service.BoardService;
+import TeamAce.AceProject.web.SessionConst;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,8 +30,9 @@ public class BoardController {
 
     //공지사항쓰기
     //@PostMapping
-    public void write(@RequestBody BoardDto boardDto){
-        boardService.saveBoard(boardDto);
+    public void write(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser,
+                      @RequestBody BoardDto boardDto){
+        boardService.saveBoard(loginUser.getId(), boardDto);
     }
 
     //공지사항수정

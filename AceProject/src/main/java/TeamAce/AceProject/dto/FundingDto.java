@@ -15,6 +15,9 @@ public class FundingDto {
     private Long id;
     private String restaurantName;
     private String menu;
+    private String information;
+    private String introduction;
+    private String notice;
     private int discountPrice;
     private int price;
     private int minFundingCount;
@@ -23,13 +26,15 @@ public class FundingDto {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    //가게주인?
     public Funding toEntityFirst(){
         Funding build = Funding.builder()
                 .restaurantName(restaurantName)
                 .menu(menu)
                 .price(price)
                 .discountPrice(discountPrice)
+                .information(information)
+                .introduction(introduction)
+                .notice(notice)
                 .maxFundingCount(maxFundingCount)
                 .minFundingCount(minFundingCount)
                 .nowFundingCount(0)
@@ -49,7 +54,10 @@ public class FundingDto {
                 .discountPrice(discountPrice)
                 .maxFundingCount(maxFundingCount)
                 .minFundingCount(minFundingCount)
-                .nowFundingCount(0)
+                .nowFundingCount(nowFundingCount)
+                .information(information)
+                .introduction(introduction)
+                .notice(notice)
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();
@@ -59,13 +67,16 @@ public class FundingDto {
 
     @Builder
     public FundingDto( Long id, String restaurantName , String menu , int discountPrice , int price , int minFundingCount, int maxFundingCount,  int nowFundingCount ,
-                      LocalDateTime startDate ,  LocalDateTime endDate){
+                      LocalDateTime startDate ,  LocalDateTime endDate , String information , String introduction ,String notice){
 
         this.id = id;
         this.restaurantName = restaurantName;
         this.menu = menu;
         this.price =price;
         this.discountPrice = discountPrice;
+        this.information = information;
+        this.introduction = introduction;
+        this.notice = notice;
         this.minFundingCount = minFundingCount;
         this.maxFundingCount = maxFundingCount;
         this.nowFundingCount = nowFundingCount;
