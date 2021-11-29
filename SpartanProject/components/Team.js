@@ -15,7 +15,7 @@ import {
 } from 'react-native-responsive-screen';
 import axios from 'axios';
 
-export default class Notice extends React.Component {
+export default class Team extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,16 +27,10 @@ export default class Notice extends React.Component {
       maximum: 10,
       current: 0,
       datas: [
-        {title: '다섯번째 공지사항', writer: 'asd', date: '21-11-25'},
-        {title: '네번째 공지사항', writer: 'bbb', date: '21-11-24'},
-        {title: '세번째 공지사항', writer: 'qwe', date: '21-11-23'},
-        {title: '두번째 공지사항', writer: 'rcf', date: '21-11-22'},
-        {title: '첫번째 공지사항', writer: 'agg', date: '21-11-21'},
-        {title: '다섯번째 공지사항', writer: 'asd', date: '21-11-25'},
-        {title: '네번째 공지사항', writer: 'bbb', date: '21-11-24'},
-        {title: '세번째 공지사항', writer: 'qwe', date: '21-11-23'},
-        {title: '두번째 공지사항', writer: 'rcf', date: '21-11-22'},
-        {title: '첫번째 공지사항', writer: 'agg', date: '21-11-21'},
+        {name: '석경호', email: 'skh@naver.com'},
+        {name: '박시균', email: 'psk@naver.com'},
+        {name: '정현구', email: 'jhk@naver.com'},
+        {name: '김민수', email: 'kms@naver.com'},
       ],
     };
   }
@@ -55,9 +49,6 @@ export default class Notice extends React.Component {
       .catch(function (error) {
         console.log(error);
       });
-
-    loadMainText = () => {};
-
     return (
       <View style={styles.container}>
         <View style={styles.row}>
@@ -75,25 +66,21 @@ export default class Notice extends React.Component {
           </TouchableOpacity>
         </View>
         <View style={styles.Notice}>
-          <Text>N O T I C E</Text>
+          <Text>Team ACE</Text>
         </View>
-        <FlatList
-          horizontal={false}
-          data={this.state.datas}
-          renderItem={({item}) => {
-            return (
-              <TouchableOpacity
-                style={styles.itemView}
-                onPress={() => Alert.alert(item.title, '로 이동')}>
+        <View style={styles.noticeList}>
+          <FlatList
+            horizontal={false}
+            data={this.state.datas}
+            renderItem={({item}) => {
+              return (
                 <View style={styles.itemList}>
-                  <Text style={(styles.item, {flex: 2})}>{item.title}</Text>
-                  <Text style={(styles.item, {flex: 1})}>{item.writer}</Text>
-                  <Text style={(styles.item, {flex: 1})}>{item.date}</Text>
+                  <Text style={styles.item}>{item.name}</Text>
+                  <Text style={styles.item}>{item.email}</Text>
                 </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
+              );
+            }}></FlatList>
+        </View>
       </View>
     );
   }
@@ -115,6 +102,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderWidth: 1,
     borderColor: 'skyblue',
+    marginBottom: 10,
   },
   row: {
     top: 0,
@@ -163,8 +151,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   item: {
-    //margin: 5,
-    textAlign: 'center',
+    flex: 1,
+    padding: 5,
+    textAlign: 'left',
     fontWeight: 'bold',
   },
 });
