@@ -7,6 +7,7 @@ import TeamAce.AceProject.dto.FindPasswordDto;
 import TeamAce.AceProject.dto.UserDto;
 import TeamAce.AceProject.service.UserService;
 import TeamAce.AceProject.web.SessionConst;
+import TeamAce.AceProject.web.argumentresolver.Login;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,7 @@ public class UserController {
     //내정보
     //@GetMapping
     public UserDto viewMyPage(
-            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser
+            @Login User loginUser
     ) {
         return userService.getUserInformation(loginUser.getId());
     }
@@ -40,7 +41,7 @@ public class UserController {
     //내정보 속 쿠폰함
     //@GetMapping
     public List<CouponDto> viewMyCouponList(
-            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser
+            @Login User loginUser
     ){
         return userService.getCouponList(loginUser.getId());
     }
@@ -54,13 +55,13 @@ public class UserController {
         userService.join(userDto);
     }
 
-    //아이디 찾기
+    //아이디 찾기 , 아이디를 return
     //@GetMapping
     public String findLoginId(@RequestBody FindLoginIdDto findLoginIdDto){
         return userService.findLoginId(findLoginIdDto);
     }
 
-    //비밀번호 찾기
+    //비밀번호 찾기 , 비밀번호를 return
     //@GetMapping
     public String findPassword(@RequestBody FindPasswordDto findPasswordDto){
         return userService.findPassword(findPasswordDto);
@@ -69,7 +70,7 @@ public class UserController {
     //이메일인증
     //@PostMapping
     public void authenticationEmail(
-            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser,
+            @Login User loginUser,
             @RequestBody String authenticationKey
     ){
         userService.IsEqualAuthenticationKey(loginUser.getId(), authenticationKey);

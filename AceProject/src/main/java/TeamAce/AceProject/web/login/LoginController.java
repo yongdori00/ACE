@@ -31,18 +31,19 @@ public class LoginController {
                         @RequestParam(value = "redirectURL" , required = false) String redirectUrl,
                         HttpServletRequest request){
         if(bindingResult.hasErrors())
-            return "//*";
+            return "//*";   //다시 로그인화면으로
 
         User loginUser = loginService.login(form.getLoginId(), form.getPassword());
 
         if(loginUser == null){
             bindingResult.reject("loginFail" , "아이디 또는 비밀번호가 맞지 않습니다.");
-            return "//*";
+            return "//*";   //다시 로그인화면으로
         }
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER , loginUser);
-        //원래있던 화면으로 돌아가게
+
+        //원래있던 화면으로 돌아갈수있게 해줌
         if(redirectUrl==null)
             return "redirect:/";
         else
