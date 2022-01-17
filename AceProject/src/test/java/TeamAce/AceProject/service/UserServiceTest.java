@@ -85,7 +85,7 @@ public class UserServiceTest {
                 .email("qwe@12345")
                 .roleType(RoleType.ASSOCIATE)
                 .build();
-        UserDto userDto = user2.toDto(user2);
+        UserDto userDto = user2.toDto();
 
         //아이디중복테스트
         assertThat(true).isEqualTo(userService.checkLoginIdDuplicate(user2.getLoginId()));

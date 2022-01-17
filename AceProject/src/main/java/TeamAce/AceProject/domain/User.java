@@ -15,7 +15,7 @@ public class User {
 
     @Id
     @GeneratedValue
-    @Column(name = "member_id")
+    @Column(name = "user_id")
     private Long id;
 
     private String name;
@@ -52,13 +52,13 @@ public class User {
     }
 
 
-    public UserDto toDto(User user) {
+    public UserDto toDto() {
         UserDto userDto = UserDto.builder()
-                .name(user.getName())
-                .loginId(user.getLoginId())
-                .password(user.getPassword())
-                .roleType(user.getRoleType())
-                .email(user.getEmail())
+                .name(name)
+                .loginId(loginId)
+                .password(password)
+                .roleType(roleType)
+                .email(email)
                 .build();
 
         return userDto;

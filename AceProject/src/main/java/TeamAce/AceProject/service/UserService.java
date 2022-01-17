@@ -33,10 +33,14 @@ public class UserService {
     @Transactional
     public Long join(UserDto userDto) throws Exception {
 
-        validateDuplicateUser(userDto);
+        if(validateDuplicateUser(userDto)){
+            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        }
+        //인증키를 만들고 이메일 보내기
         String email = userDto.getEmail();
         String authenticationKey = createKey();
         sendSimpleMessage(email,authenticationKey);
+
         User user = userDto.toEntity();
         user.setAuthenticationKey(authenticationKey);
         user.setRoleType(RoleType.ASSOCIATE);
@@ -152,12 +156,13 @@ public class UserService {
     }
 
     //회원중복체크 -> 이름+이메일
-    public void validateDuplicateUser(UserDto userDto){
+    public boolean validateDuplicateUser(UserDto userDto){
         Optional<User> findUser = userRepository.findByNameAndEmail(userDto.getName(), userDto.getEmail());
         if(findUser.isPresent()){
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+            return true;
+            //throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
-
+        return false;
     }
 
     //자기가 가진 쿠폰들
@@ -196,7 +201,7 @@ public class UserService {
     //내정보 페이지에 내정보 제공
     public UserDto getUserInformation(Long id){
         User user = userRepository.findById(id).get();
-        UserDto userDto = user.toDto(user);
+        UserDto userDto = user.toDto();
         return userDto;
     }
 

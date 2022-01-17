@@ -28,7 +28,6 @@ public class LoginController {
     //@PostMapping("/login")
     public String login(@Valid @RequestBody LoginForm form,
                         BindingResult bindingResult,
-                        @RequestParam(value = "redirectURL" , required = false) String redirectUrl,
                         HttpServletRequest request){
         if(bindingResult.hasErrors())
             return "//*";   //다시 로그인화면으로
@@ -43,11 +42,15 @@ public class LoginController {
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER , loginUser);
 
+        return "로그인성공";
+        /*
         //원래있던 화면으로 돌아갈수있게 해줌
         if(redirectUrl==null)
             return "redirect:/";
         else
             return "redirect:"+redirectUrl;
+
+         */
     }
 
 

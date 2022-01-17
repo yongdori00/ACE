@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @RestController
 public class HomeController {
 
+    //로그인정보 + 펀딩리스트??
     //@RequestMapping("/")
     public String home(
             @Login User loginUser
