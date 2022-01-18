@@ -1,14 +1,12 @@
 package TeamAce.AceProject.controller;
 
 import TeamAce.AceProject.domain.User;
-import TeamAce.AceProject.dto.CouponDto;
-import TeamAce.AceProject.dto.FindLoginIdDto;
-import TeamAce.AceProject.dto.FindPasswordDto;
-import TeamAce.AceProject.dto.UserDto;
+import TeamAce.AceProject.dto.*;
 import TeamAce.AceProject.service.UserService;
 import TeamAce.AceProject.web.SessionConst;
 import TeamAce.AceProject.web.argumentresolver.Login;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -24,7 +23,7 @@ public class UserController {
     private final UserService userService;
 
     //아이디 중복체크
-    //@GetMapping
+    @GetMapping("/join/id")
     public ResponseEntity<Boolean> checkLoginIdDuplicate(@PathVariable String loginId) {
         //true -> 아이디중복 , false -> 아이디중복 없음
         return ResponseEntity.ok(userService.checkLoginIdDuplicate(loginId));
@@ -47,8 +46,9 @@ public class UserController {
     }
 
     //회원가입
-    //@PostMapping
+    @PostMapping("/join")
     public void createUser(@Valid @RequestBody UserDto userDto , BindingResult result) throws Exception {
+        log.info("UserController : createUser");
         if(result.hasErrors()){
             //오류가있으면
         }
@@ -56,24 +56,27 @@ public class UserController {
     }
 
     //아이디 찾기 , 아이디를 return
-    //@GetMapping
+    @GetMapping("/find/id")
     public String findLoginId(@RequestBody FindLoginIdDto findLoginIdDto){
         return userService.findLoginId(findLoginIdDto);
     }
 
     //비밀번호 찾기 , 비밀번호를 return
-    //@GetMapping
+    @GetMapping("/find/password")
     public String findPassword(@RequestBody FindPasswordDto findPasswordDto){
         return userService.findPassword(findPasswordDto);
     }
 
     //이메일인증
-    //@PostMapping
+    @PostMapping("/join/mail")
     public void authenticationEmail(
             @Login User loginUser,
-            @RequestBody String authenticationKey
+            @RequestBody AuthenticationKeyDto authenticationKeyDto
     ){
-        userService.IsEqualAuthenticationKey(loginUser.getId(), authenticationKey);
+        log.info("UserController : authenticationEmail");
+        log.info("loginUser : {} " , loginUser.getLoginId() );
+        log.info("authenticationKey : {}" ,authenticationKeyDto );
+        userService.IsEqualAuthenticationKey(loginUser.getId(), authenticationKeyDto.getAuthenticationKey());
     }
 
 }

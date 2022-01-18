@@ -2,12 +2,15 @@ package TeamAce.AceProject;
 
 import TeamAce.AceProject.domain.Funding;
 import TeamAce.AceProject.domain.FundingStatus;
+import TeamAce.AceProject.domain.RoleType;
+import TeamAce.AceProject.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import java.lang.reflect.Member;
 import java.time.LocalDateTime;
 
 @Component
@@ -123,6 +126,15 @@ public class InitDb {
                     .fundingStatus(FundingStatus.PROCEEDING)
                     .build();
 
+            User user1 = User.builder()
+                    .name("시균")
+                    .loginId("qwe")
+                    .password("123")
+                    .email("psg980331@naver.com")
+                    .roleType(RoleType.REGULAR)
+                    .build();
+
+            em.persist(user1);
             em.persist(funding1);
             em.persist(funding2);
             em.persist(funding3);
