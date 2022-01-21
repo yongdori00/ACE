@@ -30,13 +30,13 @@ public class FundingController {
     }
 
     //펀딩페이지
-    @GetMapping("/funding/{id}")
+    @GetMapping("/funding/{fundingId}")
     public FundingDto viewFundingInformation(@RequestBody Long fundingId){
         return fundingService.getFunding(fundingId);
     }
 
     //펀딩참여하기
-    @PostMapping("/funding/{id}")
+    @PostMapping("/funding/{fundingId}")
     public void applyFunding(@RequestBody ApplyFundingDto applyFundingDto){
 
         if(fundingService.checkMaxFundingCount(applyFundingDto.getFundingId())){ //max에 도달했다면
@@ -46,6 +46,6 @@ public class FundingController {
         fundingService.addNowFundingCount(applyFundingDto.getFundingId());
     }
 
-
+    //펀딩만들기
 
 }

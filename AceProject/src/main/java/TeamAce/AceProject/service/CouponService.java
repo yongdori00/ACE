@@ -30,20 +30,6 @@ public class CouponService {
         findCoupon.couponStatusUpdate();
     }
 
-    //쿠폰내역함에 뿌려줄 자신의 모든 쿠폰데이터
-    @Transactional
-    public List<CouponDto> getCouponList(Long id) {
-        User findUser = userRepository.findById(id).get();
-        List<Coupon> myCoupons = findUser.getCoupons();
-        List<CouponDto> myCouponList = new ArrayList<>();
-
-        for (Coupon myCoupon : myCoupons) {
-            CouponDto couponDto = myCoupon.toDto(myCoupon);
-            myCouponList.add(couponDto);
-        }
-
-        return myCouponList;
-    }
 
     //펀딩정보를 바탕으로 각 유저마다 쿠폰을 만들어주는 서비스
     @Transactional

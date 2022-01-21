@@ -1,11 +1,9 @@
 package TeamAce.AceProject.service;
 
 import TeamAce.AceProject.domain.*;
-import TeamAce.AceProject.dto.CouponDto;
-import TeamAce.AceProject.dto.FindLoginIdDto;
-import TeamAce.AceProject.dto.FindPasswordDto;
-import TeamAce.AceProject.dto.UserDto;
+import TeamAce.AceProject.dto.*;
 import TeamAce.AceProject.repository.CouponRepository;
+import TeamAce.AceProject.repository.FundingRepository;
 import TeamAce.AceProject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -29,6 +28,7 @@ import java.util.Random;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final FundingRepository fundingRepository;
     private final JavaMailSender emailSender;
 
     //회원가입
@@ -179,22 +179,8 @@ public class UserService {
 
     //자기가 가진 쿠폰들
     public List<CouponDto> getCouponList(Long id){
-        Optional<User> findUser = userRepository.findById(id);
-        List<Coupon> coupons = findUser.get().getCoupons();
-        List<CouponDto> couponDtoList = new ArrayList<>();
-
-        for (Coupon coupon : coupons) {
-            CouponDto couponDto = CouponDto.builder()
-                    .restaurantName(coupon.getRestaurantName())
-                    .menu(coupon.getMenu())
-                    .discountPrice(coupon.getDiscountPrice())
-                    .startDate(coupon.getStartDate())
-                    .endDate(coupon.getEndDate())
-                    .build();
-
-            couponDtoList.add(couponDto);
-        }
-        return couponDtoList;
+        return userRepository.findById(id).get().getCoupons()
+                .stream().map(c -> c.toDto()).collect(Collectors.toList());
     }
 
     //펀딩중복참여 체크
@@ -217,4 +203,14 @@ public class UserService {
         return userDto;
     }
 
+    //내정보 페이지에 펀딩참여내역 제공
+    public List<FundingDto> getFundingList(String loginId) {
+        List<UserFunding> userFundings = userRepository.findByLoginId(loginId).get().getUserFundings();
+        List<FundingDto> fundingDtoList = new ArrayList<>();
+        for (UserFunding userFunding : userFundings) {
+            fundingDtoList.add(userFunding.getFunding().toDto());
+        }
+        return fundingDtoList;
+
+    }
 }
