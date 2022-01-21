@@ -54,6 +54,15 @@ public class FundingRepositoryImpl implements FundingRepositoryCustom{
                 .selectFrom(funding)
                 .where(funding.fundingStatus.eq(FundingStatus.PROCEEDING))
                 .fetch();
-
     }
+
+    @Override
+    public List<Funding> findReadyFunding() {
+        return queryFactory
+                .selectFrom(funding)
+                .where(funding.fundingStatus.eq(FundingStatus.READY))
+                .fetch();
+    }
+
+
 }

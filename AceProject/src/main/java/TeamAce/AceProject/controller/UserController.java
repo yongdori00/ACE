@@ -30,7 +30,7 @@ public class UserController {
     }
 
     //내정보
-    //@GetMapping("/user")
+    @GetMapping("/user")
     public UserDto viewMyPage(
             @Login User loginUser
     ) {
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     //내정보 속 쿠폰함
-    //@GetMapping("/user/coupon")
+    @GetMapping("/user/coupon")
     public List<CouponDto> viewMyCouponList(
             @Login User loginUser
     ){
@@ -46,7 +46,7 @@ public class UserController {
     }
 
     //내정보 속 펀딩참여내역
-    //@GetMapping("/user/funding")
+    @GetMapping("/user/funding")
     public List<FundingDto> viewMyFundingList(
             @Login User loginUser
     ){
@@ -64,7 +64,7 @@ public class UserController {
     }
 
     //아이디 찾기 , 아이디를 return
-    @GetMapping("/find/id")
+    @GetMapping("/find/loginId")
     public String findLoginId(@RequestBody FindLoginIdDto findLoginIdDto){
         return userService.findLoginId(findLoginIdDto);
     }
@@ -77,14 +77,14 @@ public class UserController {
 
     //이메일인증
     @PostMapping("/join/mail")
-    public void authenticationEmail(
+    public boolean authenticationEmail(
             @Login User loginUser,
             @RequestBody AuthenticationKeyDto authenticationKeyDto
     ){
         log.info("UserController : authenticationEmail");
         log.info("loginUser : {} " , loginUser.getLoginId() );
         log.info("authenticationKey : {}" ,authenticationKeyDto );
-        userService.IsEqualAuthenticationKey(loginUser.getId(), authenticationKeyDto.getAuthenticationKey());
+        return userService.IsEqualAuthenticationKey(loginUser.getId(), authenticationKeyDto.getAuthenticationKey());
     }
 
 }

@@ -54,6 +54,7 @@ public class User {
 
     public UserDto toDto() {
         UserDto userDto = UserDto.builder()
+                .id(id)
                 .name(name)
                 .loginId(loginId)
                 .password(password)

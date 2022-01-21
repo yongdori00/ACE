@@ -47,6 +47,7 @@ public class FundingDto {
                 .maxFundingCount(maxFundingCount)
                 .minFundingCount(minFundingCount)
                 .nowFundingCount(0)
+                .fundingStatus(FundingStatus.READY)
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();

@@ -25,7 +25,7 @@ public class BoardService {
     @Transactional
     public Long saveBoard(Long userId , BoardDto boardDto){
         User user = userRepository.findById(userId).get();
-        Board board = boardDto.toEntity();
+        Board board = Board.builder().writer(user.getName()).title(boardDto.getTitle()).content(boardDto.getContent()).build();
         user.addBoard(board);
 
         return boardRepository.save(board).getId();

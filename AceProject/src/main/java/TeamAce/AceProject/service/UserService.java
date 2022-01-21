@@ -126,14 +126,16 @@ public class UserService {
 
     //회원가입후 이메일로 보내진 인증키 인증시 준회원 -> 정회원
     @Transactional
-    public void IsEqualAuthenticationKey(Long id,String authenticationKey){
+    public boolean IsEqualAuthenticationKey(Long id,String authenticationKey){
         log.info("UserService : IsEqualAuthenticationKey");
         User user = userRepository.findById(id).get();
         log.info("authenticationKey : {}" , authenticationKey);
         if(user.getAuthenticationKey().equals(authenticationKey)){
             log.info("UserService : updateRoleTypeForJoin");
             user.updateRoleTypeForJoin();
+            return true;
         }
+        return false;
     }
 
     //아이디 찾기
@@ -209,6 +211,8 @@ public class UserService {
         List<FundingDto> fundingDtoList = new ArrayList<>();
         for (UserFunding userFunding : userFundings) {
             fundingDtoList.add(userFunding.getFunding().toDto());
+            log.info("Funding : {}" , userFunding.getFunding().getRestaurantName());
+            log.info("Funding : {}" , userFunding.getFunding().getMenu());
         }
         return fundingDtoList;
 

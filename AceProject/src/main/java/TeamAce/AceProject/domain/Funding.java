@@ -117,9 +117,17 @@ public class Funding {
         return false;
     }
 
+    //시작날짜가 됬는지 체크
+    public boolean checkFundingStartDate() {
+        if(this.startDate.isAfter(LocalDateTime.now())){
+            return true;
+        }
+        return false;
+    }
+
     //기간이 지났는지 체크
-    public boolean checkFundingDate(){
-        if(this.endDate.isAfter(LocalDateTime.now())){
+    public boolean checkFundingEndDate(){
+        if(this.endDate.isBefore(LocalDateTime.now())){
             return true;
         }
         return false;
@@ -156,6 +164,8 @@ public class Funding {
         return coupon;
     }
 
-
-
+    //펀딩 시작
+    public void startFunding() {
+        this.fundingStatus = FundingStatus.PROCEEDING;
+    }
 }

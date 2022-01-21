@@ -22,6 +22,7 @@ public class LoginMemberArgumentResolver implements
         boolean hasMemberType = User.class.isAssignableFrom(parameter.getParameterType());
         return hasLoginAnnotation && hasMemberType;
     }
+
     @Override
     public Object resolveArgument(MethodParameter parameter,
                                   ModelAndViewContainer mavContainer, NativeWebRequest webRequest,

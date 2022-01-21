@@ -36,10 +36,12 @@ public class Board extends TimeEntity{
 
     public BoardDto toDto(){
         BoardDto build = BoardDto.builder()
-                .id(this.id)
-                .writer(this.writer)
-                .title(this.title)
-                .content(this.content)
+                .id(id)
+                .writer(writer)
+                .title(title)
+                .content(content)
+                .createdDate(getCreateDate())
+                .modifiedDate(getModifiedDate())
                 .build();
         return build;
     }
@@ -47,7 +49,6 @@ public class Board extends TimeEntity{
 
     //==비즈니스 로직==//
     public void updateBoard(BoardDto boardDto){
-        this.writer = boardDto.getWriter();
         this.title = boardDto.getTitle();
         this.content = boardDto.getContent();
     }

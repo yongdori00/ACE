@@ -31,15 +31,15 @@ public class InitDb {
         private final EntityManager em;
         public void dbInit1(){
             Funding funding1 = Funding.builder()
-                    .minFundingCount(5)
-                    .maxFundingCount(20)
+                    .minFundingCount(1)
+                    .maxFundingCount(2)
                     .nowFundingCount(0)
                     .price(10000)
                     .discountPrice(8000)
                     .menu("칼국수")
                     .restaurantName("에비시")
                     .startDate(LocalDateTime.now())
-                    .endDate(LocalDateTime.now().plusDays(1))
+                    .endDate(LocalDateTime.now().plusSeconds(5))
                     .introduction("asd")
                     .information("zxc")
                     .notice("qwe")
@@ -55,7 +55,7 @@ public class InitDb {
                     .menu("카레")
                     .restaurantName("큐덮이")
                     .startDate(LocalDateTime.now())
-                    .endDate(LocalDateTime.now().plusDays(2))
+                    .endDate(LocalDateTime.now().plusSeconds(5))
                     .introduction("asd")
                     .information("zxc")
                     .notice("qwe")
@@ -71,7 +71,7 @@ public class InitDb {
                     .menu("덮밥")
                     .restaurantName("시비시")
                     .startDate(LocalDateTime.now())
-                    .endDate(LocalDateTime.now().plusDays(5))
+                    .endDate(LocalDateTime.now().plusSeconds(5))
                     .introduction("asd")
                     .information("zxc")
                     .notice("qwe")
@@ -87,7 +87,7 @@ public class InitDb {
                     .menu("제육")
                     .restaurantName("에스디")
                     .startDate(LocalDateTime.now())
-                    .endDate(LocalDateTime.now().plusDays(1))
+                    .endDate(LocalDateTime.now().plusSeconds(13))
                     .introduction("asd")
                     .information("zxc")
                     .notice("qwe")
@@ -103,7 +103,7 @@ public class InitDb {
                     .menu("피자")
                     .restaurantName("피오큐")
                     .startDate(LocalDateTime.now())
-                    .endDate(LocalDateTime.now().plusDays(6))
+                    .endDate(LocalDateTime.now().plusSeconds(15))
                     .introduction("asd")
                     .information("zxc")
                     .notice("qwe")
@@ -119,7 +119,7 @@ public class InitDb {
                     .menu("돈까스")
                     .restaurantName("케이제이")
                     .startDate(LocalDateTime.now())
-                    .endDate(LocalDateTime.now().plusDays(7))
+                    .endDate(LocalDateTime.now().plusSeconds(20))
                     .introduction("asd")
                     .information("zxc")
                     .notice("qwe")
@@ -127,14 +127,32 @@ public class InitDb {
                     .build();
 
             User user1 = User.builder()
-                    .name("시균")
+                    .name("A")
                     .loginId("qwe")
                     .password("123")
-                    .email("ads@naver.com")
+                    .email("qwe@naver.com")
+                    .roleType(RoleType.REGULAR)
+                    .build();
+
+            User user2 = User.builder()
+                    .name("B")
+                    .loginId("asd")
+                    .password("123")
+                    .email("asd@naver.com")
+                    .roleType(RoleType.REGULAR)
+                    .build();
+
+            User user3 = User.builder()
+                    .name("C")
+                    .loginId("zxc")
+                    .password("123")
+                    .email("zxc@naver.com")
                     .roleType(RoleType.REGULAR)
                     .build();
 
             em.persist(user1);
+            em.persist(user2);
+            em.persist(user3);
             em.persist(funding1);
             em.persist(funding2);
             em.persist(funding3);

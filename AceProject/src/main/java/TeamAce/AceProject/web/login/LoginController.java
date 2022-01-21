@@ -16,13 +16,8 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 public class LoginController {
-    private final LoginService loginService;
 
-    //로그인
-    @GetMapping("/login")
-    public String loginForm(@RequestBody LoginForm form){
-        return "";
-    }
+    private final LoginService loginService;
 
     //로그인
     @PostMapping("/login")
