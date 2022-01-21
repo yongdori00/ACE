@@ -8,6 +8,7 @@ import TeamAce.AceProject.dto.UserDto;
 import TeamAce.AceProject.repository.CouponRepository;
 import TeamAce.AceProject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -32,11 +34,17 @@ public class UserService {
     //회원가입
     @Transactional
     public Long join(UserDto userDto) throws Exception {
+        log.info("UserService : join1");
+        if(validateDuplicateUser(userDto)){
+            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        }
 
-        validateDuplicateUser(userDto);
+        //인증키를 만들고 이메일 보내기
         String email = userDto.getEmail();
         String authenticationKey = createKey();
         sendSimpleMessage(email,authenticationKey);
+        log.info("UserService : join2");
+
         User user = userDto.toEntity();
         user.setAuthenticationKey(authenticationKey);
         user.setRoleType(RoleType.ASSOCIATE);
@@ -46,14 +54,13 @@ public class UserService {
 
     //회원가입시 보낼 메세지 작성
     private MimeMessage createMessage(String to, String authenticationKey)throws Exception{
-
+        log.info("UserService : createMessage1");
         System.out.println("보내는 대상 : "+ to);
         System.out.println("인증 번호 : "+authenticationKey);
         MimeMessage  message = emailSender.createMimeMessage();
-
+        log.info("UserService : createMessage2");
         message.addRecipients(Message.RecipientType.TO, to);//보내는 대상
-        message.setSubject("Ace" +
-                "회원가입 이메일 인증");//제목
+        message.setSubject("Ace" + "회원가입 이메일 인증");//제목
 
         String msgg="";
         msgg+= "<div style='margin:100px;'>";
@@ -71,7 +78,7 @@ public class UserService {
         msgg+= "</div>";
         message.setText(msgg, "utf-8", "html");//내용
         //message.setFrom(new InternetAddress("properties email!","Ace"));//보내는 사람
-
+        log.info("UserService : createMessage3");
         return message;
     }
 
@@ -103,10 +110,14 @@ public class UserService {
 
     //회원가입시 이메일전송
     public void sendSimpleMessage(String to,String authenticationKey)throws Exception {
+        log.info("UserService : sendSimpleMessage");
         // TODO Auto-generated method stub
         MimeMessage message = createMessage(to,authenticationKey);
+
         try{//예외처리
+            log.info("UserService : sendSimpleMessage1");
             emailSender.send(message);
+            log.info("UserService : sendSimpleMessage2");
         }catch(MailException es){
             es.printStackTrace();
             throw new IllegalArgumentException();
@@ -116,8 +127,11 @@ public class UserService {
     //회원가입후 이메일로 보내진 인증키 인증시 준회원 -> 정회원
     @Transactional
     public void IsEqualAuthenticationKey(Long id,String authenticationKey){
+        log.info("UserService : IsEqualAuthenticationKey");
         User user = userRepository.findById(id).get();
+        log.info("authenticationKey : {}" , authenticationKey);
         if(user.getAuthenticationKey().equals(authenticationKey)){
+            log.info("UserService : updateRoleTypeForJoin");
             user.updateRoleTypeForJoin();
         }
     }
@@ -128,7 +142,8 @@ public class UserService {
         if(findUser.isPresent()){
             return findUser.get().getLoginId();
         }else{ //존재하지 않으면
-            throw new IllegalStateException("일치하는 회원의 아이디가 없습니다.");
+            //throw new IllegalStateException("일치하는 회원의 아이디가 없습니다.");
+            return "false";
         }
     }
 
@@ -140,7 +155,8 @@ public class UserService {
         if(findUser.isPresent()){
             return findUser.get().getPassword();
         }else{ //존재하지 않으면
-            throw new IllegalStateException("일치하는 회원의 비밀번호를 찾을수없습니다.");
+            //throw new IllegalStateException("일치하는 회원의 비밀번호를 찾을수없습니다.");
+            return "false";
         }
     }
 
@@ -152,12 +168,13 @@ public class UserService {
     }
 
     //회원중복체크 -> 이름+이메일
-    public void validateDuplicateUser(UserDto userDto){
+    public boolean validateDuplicateUser(UserDto userDto){
         Optional<User> findUser = userRepository.findByNameAndEmail(userDto.getName(), userDto.getEmail());
         if(findUser.isPresent()){
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+            return true;
+            //throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
-
+        return false;
     }
 
     //자기가 가진 쿠폰들
@@ -196,7 +213,7 @@ public class UserService {
     //내정보 페이지에 내정보 제공
     public UserDto getUserInformation(Long id){
         User user = userRepository.findById(id).get();
-        UserDto userDto = user.toDto(user);
+        UserDto userDto = user.toDto();
         return userDto;
     }
 

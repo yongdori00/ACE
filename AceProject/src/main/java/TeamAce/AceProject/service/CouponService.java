@@ -49,9 +49,9 @@ public class CouponService {
     @Transactional
     public void createCoupon(Funding funding){
 
-        List<UserFunding> userFundings = funding.getUserFundings();
+        List<UserFunding> userFundingList = funding.getUserFundings();
 
-        for (UserFunding userFunding : userFundings) {
+        for (UserFunding userFunding : userFundingList) {
             User user = userFunding.getUser();
             Coupon coupon = funding.FundingToCoupon(funding);
             user.addCoupon(coupon);

@@ -25,6 +25,7 @@ public class FundingRepositoryImpl implements FundingRepositoryCustom{
     private final EntityManager em;
     private final JPAQueryFactory queryFactory;
 
+    //진행중인 펀딩만 페이징
     @Override
     public Slice<Funding> findAllCustom(Pageable pageable) {
 
@@ -36,6 +37,8 @@ public class FundingRepositoryImpl implements FundingRepositoryCustom{
                 .fetchResults();
 
         List<Funding> content = result.getResults();
+        System.out.println("content.size() = " + content.size());
+        System.out.println("pageable.getPageSize() = " + pageable.getPageSize());
 
         boolean hasNext = false;
         if (content.size() > pageable.getPageSize()) {

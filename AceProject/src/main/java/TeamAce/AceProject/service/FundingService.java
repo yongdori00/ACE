@@ -5,16 +5,23 @@ import TeamAce.AceProject.domain.Restaurant;
 import TeamAce.AceProject.domain.User;
 import TeamAce.AceProject.domain.UserFunding;
 import TeamAce.AceProject.dto.FundingDto;
+import TeamAce.AceProject.dto.PageRequestDto;
 import TeamAce.AceProject.repository.*;
 import lombok.RequiredArgsConstructor;
+
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
+
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 @Transactional(readOnly = true)
@@ -37,17 +44,19 @@ public class FundingService {
     //펀딩정보를 페이지에 띄워주기
     public FundingDto getFunding(Long id){
         Funding findFunding = fundingRepository.findById(id).get();
-        FundingDto fundingDto = findFunding.toDto(findFunding);
+        FundingDto fundingDto = findFunding.toDto();
         return fundingDto;
     }
 
     //펀딩리스트들 넘겨주기
-    public Slice<FundingDto> getFundingList(Pageable pageable){
-        Slice<Funding> fundingList = fundingRepository.findAllCustom((org.springframework.data.domain.Pageable) pageable);
-        //되는가???
-        Slice<FundingDto> fundingDtoList = fundingList.map(funding -> funding.toDto(funding));
+    public Slice<FundingDto> getFundingList(PageRequestDto pageRequestDto){
+        Pageable pageable = PageRequest.of(pageRequestDto.getPage(), pageRequestDto.getSize());
+        return fundingRepository.findAllCustom(pageable).map(funding -> funding.toDto());
+    }
 
-        return fundingDtoList;
+    public Page<FundingDto> getFundings(Pageable pageable){
+        return fundingRepository.findAll( pageable).map(f -> f.toDto());
+
     }
 
 

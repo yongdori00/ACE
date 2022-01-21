@@ -26,9 +26,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	//querydsl 추가
-	implementation 'com.querydsl:querydsl-jpa'
-
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.2'
 	implementation 'junit:junit:4.12'
@@ -36,6 +33,9 @@ dependencies {
 
 	// 이메일 전송
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	//querydsl 추가
+	implementation 'com.querydsl:querydsl-jpa'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
