@@ -8,11 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -31,8 +27,8 @@ public class FundingController {
 
     //펀딩페이지
     @GetMapping("/funding/{id}")
-    public FundingDto viewFundingInformation(@RequestBody Long fundingId){
-        return fundingService.getFunding(fundingId);
+    public FundingDto viewFundingInformation(@PathVariable Long id){
+        return fundingService.getFunding(id);
     }
 
     //펀딩참여하기
@@ -45,6 +41,8 @@ public class FundingController {
         fundingService.addUserFunding(applyFundingDto.getUserId(),applyFundingDto.getFundingId());
         fundingService.addNowFundingCount(applyFundingDto.getFundingId());
     }
+
+    //펀딩 등록하기
 
 
 

@@ -46,6 +46,9 @@ public class Funding {
     @OneToMany(mappedBy = "funding")
     private List<UserFunding> userFundings = new ArrayList<>();
 
+    @OneToMany(mappedBy = "funding" , cascade = CascadeType.ALL)
+    private List<Image> imageList = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private FundingStatus fundingStatus; // 진행중 or 마감
 

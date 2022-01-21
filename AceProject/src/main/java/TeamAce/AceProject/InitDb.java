@@ -130,7 +130,7 @@ public class InitDb {
                     .name("시균")
                     .loginId("qwe")
                     .password("123")
-                    .email("psg980331@naver.com")
+                    .email("ads@naver.com")
                     .roleType(RoleType.REGULAR)
                     .build();
 
