@@ -23,14 +23,14 @@ public class UserController {
     private final UserService userService;
 
     //아이디 중복체크
-    @GetMapping("/join/id")
+    @GetMapping("/join/{loginId}")
     public ResponseEntity<Boolean> checkLoginIdDuplicate(@PathVariable String loginId) {
         //true -> 아이디중복 , false -> 아이디중복 없음
         return ResponseEntity.ok(userService.checkLoginIdDuplicate(loginId));
     }
 
     //내정보
-    //@GetMapping
+    //@GetMapping("/user")
     public UserDto viewMyPage(
             @Login User loginUser
     ) {
@@ -38,11 +38,19 @@ public class UserController {
     }
 
     //내정보 속 쿠폰함
-    //@GetMapping
+    //@GetMapping("/user/coupon")
     public List<CouponDto> viewMyCouponList(
             @Login User loginUser
     ){
         return userService.getCouponList(loginUser.getId());
+    }
+
+    //내정보 속 펀딩참여내역
+    //@GetMapping("/user/funding")
+    public List<FundingDto> viewMyFundingList(
+            @Login User loginUser
+    ){
+        return userService.getFundingList(loginUser.getLoginId());
     }
 
     //회원가입

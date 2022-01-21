@@ -47,14 +47,14 @@ public class Coupon {
         this.couponStatus = couponStatus;
     }
 
-    public CouponDto toDto(Coupon coupon){
+    public CouponDto toDto(){
         CouponDto couponDto = CouponDto.builder()
-                .restaurantName(coupon.getRestaurantName())
-                .discountPrice(coupon.getDiscountPrice())
-                .menu(coupon.getMenu())
-                .startDate(coupon.getStartDate())
-                .endDate(coupon.getEndDate())
-                .couponStatus(coupon.getCouponStatus())
+                .restaurantName(restaurantName)
+                .discountPrice(discountPrice)
+                .menu(menu)
+                .startDate(startDate)
+                .endDate(endDate)
+                .couponStatus(couponStatus)
                 .build();
 
         return  couponDto;

@@ -8,7 +8,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 
 
 @RestController
@@ -26,13 +30,13 @@ public class FundingController {
     }
 
     //펀딩페이지
-    @GetMapping("/funding/{id}")
-    public FundingDto viewFundingInformation(@PathVariable Long id){
-        return fundingService.getFunding(id);
+    @GetMapping("/funding/{fundingId}")
+    public FundingDto viewFundingInformation(@RequestBody Long fundingId){
+        return fundingService.getFunding(fundingId);
     }
 
     //펀딩참여하기
-    @PostMapping("/funding/{id}")
+    @PostMapping("/funding/{fundingId}")
     public void applyFunding(@RequestBody ApplyFundingDto applyFundingDto){
 
         if(fundingService.checkMaxFundingCount(applyFundingDto.getFundingId())){ //max에 도달했다면
@@ -42,8 +46,6 @@ public class FundingController {
         fundingService.addNowFundingCount(applyFundingDto.getFundingId());
     }
 
-    //펀딩 등록하기
-
-
+    //펀딩만들기
 
 }
