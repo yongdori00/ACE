@@ -2,6 +2,8 @@ package TeamAce.AceProject.service;
 
 import TeamAce.AceProject.domain.*;
 import TeamAce.AceProject.dto.CouponDto;
+import TeamAce.AceProject.dto.FindLoginIdDto;
+import TeamAce.AceProject.dto.FindPasswordDto;
 import TeamAce.AceProject.dto.UserDto;
 import TeamAce.AceProject.repository.*;
 import lombok.extern.slf4j.Slf4j;
@@ -31,15 +33,6 @@ public class UserServiceTest {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private CouponRepository couponRepository;
-
-    @Autowired
-    private FundingRepository fundingRepository;
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
 
     @Autowired
     private UserFundingRepository userFundingRepository;
@@ -92,7 +85,7 @@ public class UserServiceTest {
                 .email("qwe@12345")
                 .roleType(RoleType.ASSOCIATE)
                 .build();
-        UserDto userDto = user2.toDto(user2);
+        UserDto userDto = user2.toDto();
 
         //아이디중복테스트
         assertThat(true).isEqualTo(userService.checkLoginIdDuplicate(user2.getLoginId()));
@@ -132,12 +125,6 @@ public class UserServiceTest {
         user.addCoupon(cp2);
 
         User save = userRepository.save(user);
-
-        System.out.println("hello = " );
-
-        couponRepository.save(cp1);
-        couponRepository.save(cp2);
-
 
         List<CouponDto> couponList = userService.getCouponList(save.getId());
 
@@ -189,14 +176,78 @@ public class UserServiceTest {
                 .user(user)
                 .build();
 
-        funding.setRestaurant(restaurant);
         funding.addUserFunding(userFunding);
         user.addUserFunding(userFunding);
 
         UserFunding save = userFundingRepository.save(userFunding);
         assertThrows(IllegalStateException.class , () -> {userService.validateDuplicateFunding(user.getId(),funding);  });
+    }
+
+    //이메일 인증
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void emailAuthenticationKeyTest(){
+        User user = User.builder()
+                .name("시균")
+                .loginId("1234")
+                .password("123")
+                .email("qwe@123")
+                .roleType(RoleType.ASSOCIATE)
+                .authenticationKey("asd123")
+                .build();
+
+        User save = userRepository.save(user);
+        userService.IsEqualAuthenticationKey(save.getId(), "asd123");
+        User user1 = userRepository.findById(save.getId()).get();
+        assertThat(user1.getRoleType()).isEqualTo(RoleType.REGULAR);
 
     }
 
+    //아이디 찾기 , 비밀번호 찾기
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void findLoginIdAndPasswordTest(){
+        User user = User.builder()
+                .name("시균")
+                .loginId("1234")
+                .password("123")
+                .email("qwe@123")
+                .roleType(RoleType.ASSOCIATE)
+                .authenticationKey("asd123")
+                .build();
+
+        User save = userRepository.save(user);
+
+        FindLoginIdDto findLoginIdDto1 = FindLoginIdDto.builder()
+                .name("시균")
+                .email("qwe@123")
+                .build();
+
+        FindLoginIdDto findLoginIdDto2 = FindLoginIdDto.builder()
+                .name("시균2")
+                .email("qwe@123")
+                .build();
+
+        FindPasswordDto findPasswordDto1 = FindPasswordDto.builder()
+                .name("시균")
+                .email("qwe@123")
+                .loginId("1234")
+                .build();
+
+        FindPasswordDto findPasswordDto2 = FindPasswordDto.builder()
+                .name("시균")
+                .email("qwe@123")
+                .loginId("123")
+                .build();
+
+        assertThat(userService.findLoginId(findLoginIdDto1)).isEqualTo("1234");
+        assertThrows(IllegalStateException.class , () -> { userService.findLoginId(findLoginIdDto2); } );
+
+        assertThat(userService.findPassword(findPasswordDto1)).isEqualTo("123");
+        assertThrows(IllegalStateException.class , () -> { userService.findPassword(findPasswordDto2); } );
+
+    }
 
 }

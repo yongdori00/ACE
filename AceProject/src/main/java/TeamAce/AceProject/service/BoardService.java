@@ -1,14 +1,17 @@
 package TeamAce.AceProject.service;
 
 import TeamAce.AceProject.domain.Board;
+import TeamAce.AceProject.domain.User;
 import TeamAce.AceProject.dto.BoardDto;
 import TeamAce.AceProject.repository.BoardRepository;
+import TeamAce.AceProject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -16,45 +19,29 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     //게시글 작성
     @Transactional
-    public Long saveBoard(BoardDto boardDto){
-        return boardRepository.save(boardDto.toEntity()).getId();
+    public Long saveBoard(Long userId , BoardDto boardDto){
+        User user = userRepository.findById(userId).get();
+        Board board = Board.builder().writer(user.getName()).title(boardDto.getTitle()).content(boardDto.getContent()).build();
+        user.addBoard(board);
+
+        return boardRepository.save(board).getId();
     }
 
     //게시글 보여주기
     //Repository에서 모든 데이터를 조회하여, BoardDTO List에 데이터를 넣어 반환
     @Transactional
     public List<BoardDto> getBoardList() {
-        List<Board> boardList = boardRepository.findAll();
-        List<BoardDto> boardDtoList = new ArrayList<>();
-
-        for(Board board : boardList) {
-            BoardDto boardDTO = BoardDto.builder()
-                    .id(board.getId())
-                    .writer(board.getWriter())
-                    .title(board.getTitle())
-                    .content(board.getContent())
-                    .build();
-            boardDtoList.add(boardDTO);
-        }
-
-        return boardDtoList;
+        return boardRepository.findAll().stream().map(b -> b.toDto()).collect(Collectors.toList());
     }
 
     //게시글의 id를 받아 해당 게시글의 데이터만 가져와 화면에 뿌려줘야함.
     @Transactional
     public BoardDto getBoard(Long id) {
-        Board board = boardRepository.findById(id).get();
-
-        BoardDto boardDto = BoardDto.builder()
-                .id(board.getId())
-                .writer(board.getWriter())
-                .title(board.getTitle())
-                .content(board.getContent())
-                .build();
-        return boardDto;
+        return boardRepository.findById(id).get().toDto();
     }
 
     //게시글 수정
@@ -62,10 +49,8 @@ public class BoardService {
     public BoardDto updateBoard(BoardDto boardDto){
         Board board = boardRepository.findById(boardDto.getId()).get();
         board.updateBoard(boardDto);
-        Board updatedBoard = boardRepository.save(board);
-        BoardDto updatedBoardDto = updatedBoard.toDto();
 
-        return updatedBoardDto;
+        return board.toDto();
 
     }
 

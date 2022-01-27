@@ -15,28 +15,22 @@ import {
 } from 'react-native-responsive-screen';
 import axios from 'axios';
 
-export default class Notice extends React.Component {
+export default class Team extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoggedIn: false,
-      isLoggedInPage: 'Login',
-      loginStatus: '로그인/회원가입',
+      isLoggedInPage: 'SignUp',
+      loginStatus: '마이페이지',
       nameOfRestaurant: '',
       minimum: 0,
       maximum: 10,
       current: 0,
       datas: [
-        {title: '다섯번째 공지사항', writer: 'asd', date: '21-11-25'},
-        {title: '네번째 공지사항', writer: 'bbb', date: '21-11-24'},
-        {title: '세번째 공지사항', writer: 'qwe', date: '21-11-23'},
-        {title: '두번째 공지사항', writer: 'rcf', date: '21-11-22'},
-        {title: '첫번째 공지사항', writer: 'agg', date: '21-11-21'},
-        {title: '다섯번째 공지사항', writer: 'asd', date: '21-11-25'},
-        {title: '네번째 공지사항', writer: 'bbb', date: '21-11-24'},
-        {title: '세번째 공지사항', writer: 'qwe', date: '21-11-23'},
-        {title: '두번째 공지사항', writer: 'rcf', date: '21-11-22'},
-        {title: '첫번째 공지사항', writer: 'agg', date: '21-11-21'},
+        {name: '석경호', email: 'skh@naver.com'},
+        {name: '박시균', email: 'psk@naver.com'},
+        {name: '정현구', email: 'jhk@naver.com'},
+        {name: '김민수', email: 'kms@naver.com'},
       ],
     };
   }
@@ -47,8 +41,7 @@ export default class Notice extends React.Component {
         if (isLoggedIn == true) {
           this.state.loginStatus = '마이페이지';
           this.state.isLoggedInPage = 'Mypage';
-        }
-        else {
+        } else {
           this.state.loginStatus = '로그인/회원가입';
           this.state.isLoggedInPage = 'Signup';
         }
@@ -56,9 +49,6 @@ export default class Notice extends React.Component {
       .catch(function (error) {
         console.log(error);
       });
-
-    loadMainText = () => {};
-
     return (
       <View style={styles.container}>
         <View style={styles.row}>
@@ -75,25 +65,22 @@ export default class Notice extends React.Component {
             <Text>{this.state.loginStatus}</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView style={styles.noticeList}>
+        <View style={styles.Notice}>
+          <Text>Team ACE</Text>
+        </View>
+        <View style={styles.noticeList}>
           <FlatList
             horizontal={false}
             data={this.state.datas}
             renderItem={({item}) => {
               return (
-                <TouchableOpacity
-                  style={styles.itemView}
-                  onPress={() => alert(item.title, '로 이동')}>
-                  <View style={styles.itemList}>
-                    <Text style={styles.item}>{item.title}</Text>
-                    <Text style={styles.item}>{item.writer}</Text>
-                    <Text style={styles.item}>{item.date}</Text>
-                  </View>
-                </TouchableOpacity>
+                <View style={styles.itemList}>
+                  <Text style={styles.item}>{item.name}</Text>
+                  <Text style={styles.item}>{item.email}</Text>
+                </View>
               );
             }}></FlatList>
-        </ScrollView>
-
+        </View>
       </View>
     );
   }
@@ -115,6 +102,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderWidth: 1,
     borderColor: 'skyblue',
+    marginBottom: 10,
   },
   row: {
     top: 0,
@@ -163,8 +151,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   item: {
-    //margin: 5,
-    textAlign: 'center',
+    flex: 1,
+    padding: 5,
+    textAlign: 'left',
     fontWeight: 'bold',
   },
 });

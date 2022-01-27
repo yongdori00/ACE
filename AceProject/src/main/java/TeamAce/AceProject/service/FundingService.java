@@ -4,60 +4,69 @@ import TeamAce.AceProject.domain.Funding;
 import TeamAce.AceProject.domain.Restaurant;
 import TeamAce.AceProject.domain.User;
 import TeamAce.AceProject.domain.UserFunding;
+import TeamAce.AceProject.dto.ApplyFundingDto;
 import TeamAce.AceProject.dto.FundingDto;
-import TeamAce.AceProject.repository.FundingRepository;
-import TeamAce.AceProject.repository.FundingRepositoryImpl;
-import TeamAce.AceProject.repository.RestaurantRepository;
-import TeamAce.AceProject.repository.UserRepository;
+import TeamAce.AceProject.dto.PageRequestDto;
+import TeamAce.AceProject.repository.*;
 import lombok.RequiredArgsConstructor;
+
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FundingService {
 
     private final FundingRepository fundingRepository;
-    private final RestaurantRepository restaurantRepository;
+    private final UserFundingRepository userFundingRepository;
     private final UserRepository userRepository;
     private final CouponService couponService;
 
 
     //새로운 펀딩 만들기
+    @Transactional
     public void createFunding(FundingDto fundingDto){
         Funding funding = fundingDto.toEntityFirst();
-        Restaurant restaurant = restaurantRepository.findByRestaurantName(funding.getRestaurantName()).get();
-        funding.setRestaurant(restaurant);
-
         fundingRepository.save(funding);
     }
 
     //펀딩정보를 페이지에 띄워주기
     public FundingDto getFunding(Long id){
         Funding findFunding = fundingRepository.findById(id).get();
-        FundingDto fundingDto = findFunding.toDto(findFunding);
+        FundingDto fundingDto = findFunding.toDto();
         return fundingDto;
     }
 
     //펀딩리스트들 넘겨주기
-    public Slice<FundingDto> getFundingList(Pageable pageable){
-        Slice<Funding> fundingList = fundingRepository.findAllCustom((org.springframework.data.domain.Pageable) pageable);
-        //되는가???
-        Slice<FundingDto> fundingDtoList = fundingList.map(funding -> funding.toDto(funding));
+    public Slice<FundingDto> getFundingList(PageRequestDto pageRequestDto){
+        Pageable pageable = PageRequest.of(pageRequestDto.getPage(), pageRequestDto.getSize());
+        return fundingRepository.findAllCustom(pageable).map(funding -> funding.toDto());
+    }
 
-        return fundingDtoList;
+    public Page<FundingDto> getFundings(Pageable pageable){
+        return fundingRepository.findAll( pageable).map(f -> f.toDto());
+
     }
 
 
     //한 사람이 펀딩에 참여했을때 Funding의 userFunding 추가
+    @Transactional
     public void addUserFunding(Long userId , Long fundingId){
+        log.info("FundingService : addUserFunding");
         User findUser = userRepository.findById(userId).get();
         Funding findFunding = fundingRepository.findById(fundingId).get();
 
@@ -66,36 +75,62 @@ public class FundingService {
                 .funding(findFunding)
                 .build();
 
-        findFunding.addUserFunding(createUserFunding);
-        findUser.addUserFunding(createUserFunding);
+        userFundingRepository.save(createUserFunding);
     }
 
 
     //한 사람이 펀딩에 참여했을때 nowFundingCount +1 해주는 메서드
+    @Transactional
     public void addNowFundingCount(Long fundingId){
+        log.info("FundingService : addNowFundingCount");
         Optional<Funding> findFunding = fundingRepository.findById(fundingId);
         findFunding.get().addFundingCount();
 
     }
 
 
-    //펀딩이 max에 도달한지 ,
-    public void checkMaxFundingCount(Long fundingId){
+    //이번 신청으로 펀딩이max에 도달한지
+    @Transactional
+    public boolean checkMaxFundingCount(Long userId , Long fundingId){
+        log.info("FundingService : checkMaxFundingCount");
         Funding findFunding = fundingRepository.findById(fundingId).get();
-        if(findFunding.checkMaxFunding() == true){ //max에 도달했다면
+        if(findFunding.checkMaxFunding()){ // 이번 신청으로 max에 도달할수있다면
+            findFunding.addFundingCount();
+
+            UserFunding userFunding = UserFunding.builder().user(userRepository.findById(userId).get())
+                    .funding(fundingRepository.findById(fundingId).get()).build();
+            findFunding.addUserFunding(userFunding);
+
+            userFundingRepository.save(userFunding);
             couponService.createCoupon(findFunding); //유저들에게 쿠폰발송
+            return true;
         }
+        //이번 신청으로 max에 도달하지 못했음
+        return false;
+    }
+
+    //펀딩이 max에 도달했는가?
+    public boolean isMaxFundingCount(Long fundingId) {
+        log.info("FundingService : isMaxFundingCount");
+        Funding findFunding = fundingRepository.findById(fundingId).get();
+        if(findFunding.getMaxFundingCount() == findFunding.getNowFundingCount()){
+            return true;
+        }
+        return false;
     }
 
 
-    //펀딩기간을 넘겼으면 min체크
-    @Scheduled(cron = "0 0 0 * * *") // 매일 0시에 체크
-    public void checkFundingDate(){
+    //매일 자정에 펀딩이 끝났는지 아닌지 체크
+    @Transactional
+    @Scheduled(cron = "1 0 0 * * *") // 매일 0시에 체크
+    public void checkFundingEndDate(){
+        log.info("FundingService : checkFundingEndDate");
+
         //현재 진행중인 펀딩리스트들 가져옴
         List<Funding> proceedingFunding = fundingRepository.findProceedingFunding();
 
         for (Funding funding : proceedingFunding) {
-            if(funding.checkFundingDate() == true) { //기간이 지났다면
+            if(funding.checkFundingEndDate()) { //기간이 지났다면
                 if (funding.checkMinFunding() == true) { //min을 넘겼다면
                     couponService.createCoupon(funding);
                 } else { //min을 못넘겼다면 , 유저에게 환불해줘야함
@@ -103,8 +138,27 @@ public class FundingService {
                 }
             }
         }
-
     }
 
+    //펀딩 시작날짜가 되면 펀딩시작!
+    @Transactional
+    @Scheduled(cron = "1 0 0 * * *") // 매일 0시에 체크
+    public void checkFundingStartDate(){
+        log.info("FundingService : checkFundingStartDate");
+        List<Funding> readyFunding = fundingRepository.findReadyFunding();
 
+        for (Funding funding : readyFunding) {
+            if(funding.checkFundingStartDate()){ //시작날짜가 됬다면
+                funding.startFunding(); //펀딩상태를 READY -> PROCEEDING
+            }
+        }
+    }
+
+    public List<FundingDto> findFundingList(String restaurantName) {
+        log.info("FundingService : findFundingList");
+        return fundingRepository.findByRestaurantNameContaining(restaurantName)
+                .stream().map(f -> f.toDto()).collect(Collectors.toList());
+
+
+    }
 }

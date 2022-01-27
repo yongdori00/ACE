@@ -10,7 +10,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@Builder
 public class UserDto {
+
+    private Long id;
 
     @NotBlank(message = "이름을 입력해주세요.")
     private String name;
@@ -21,8 +24,10 @@ public class UserDto {
     @NotBlank(message = "비밀번호를 입력해주세요.")
     private String password;
 
+    /*
     @NotBlank(message = "비밀번호를 한번더 입력해주세요.")
     private String checkPassword;
+     */
 
     @NotBlank(message = "이메일을 입력해주세요.")
     @Email(message = "올바른 이메일 주소를 입력해주세요.")
@@ -31,7 +36,6 @@ public class UserDto {
     private RoleType roleType;
 
     //계좌추가
-
 
     public User toEntity(){
         User build = User.builder()
@@ -44,13 +48,6 @@ public class UserDto {
     }
 
 
-    @Builder
-    public UserDto(String name , String loginId, String password, String email  , RoleType roleType){
-        this.name = name;
-        this.loginId = loginId;
-        this.password = password;
-        this.email = email;
-        this.roleType = roleType;
-    }
+
 
 }

@@ -10,4 +10,5 @@ import java.util.List;
 public interface FundingRepositoryCustom {
     Slice<Funding> findAllCustom(Pageable pageable);
     List<Funding> findProceedingFunding();
+    List<Funding> findReadyFunding();
 }

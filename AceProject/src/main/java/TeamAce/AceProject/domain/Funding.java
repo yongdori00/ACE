@@ -10,7 +10,8 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 public class Funding {
 
     @Id @GeneratedValue
@@ -27,13 +28,26 @@ public class Funding {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
+    @Lob
+    private String introduction;
+    @Lob
+    private String information;
+    @Lob
+    private String notice;
 
+
+    /*
     @OneToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+    */
 
+    @Builder.Default
     @OneToMany(mappedBy = "funding")
     private List<UserFunding> userFundings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "funding" , cascade = CascadeType.ALL)
+    private List<Image> imageList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private FundingStatus fundingStatus; // 진행중 or 마감
@@ -41,35 +55,26 @@ public class Funding {
     @Enumerated(EnumType.STRING)
     private IsFundingSuccess isFundingSuccess; // 기간안에 달성 or 실패
 
-
-    @Builder
-    public Funding(Long id , String restaurantName , String menu , int discountPrice , int price, int minFundingCount, int maxFundingCount, int nowFundingCount,
-                   LocalDateTime startDate ,  LocalDateTime endDate , FundingStatus fundingStatus , IsFundingSuccess isFundingSuccess){
-        this.id = id;
-        this.restaurantName = restaurantName;
-        this.menu = menu;
-        this.price = price;
-        this.discountPrice = discountPrice;
-        this.minFundingCount = minFundingCount;
-        this.maxFundingCount = maxFundingCount;
-        this.nowFundingCount = nowFundingCount;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.fundingStatus = fundingStatus;
-        this.isFundingSuccess = isFundingSuccess;
-
+    public Funding() {
     }
 
-    public FundingDto toDto(Funding funding){
+
+    public FundingDto toDto(){
         FundingDto fundingDto = FundingDto.builder()
-                .id(funding.getId())
-                .price(funding.getPrice())
-                .discountPrice(funding.getDiscountPrice())
-                .minFundingCount(funding.getMinFundingCount())
-                .maxFundingCount(funding.getMaxFundingCount())
-                .nowFundingCount(funding.getNowFundingCount())
-                .startDate(funding.getStartDate())
-                .endDate(funding.getEndDate())
+                .id(id)
+                .price(price)
+                .restaurantName(restaurantName)
+                .menu(menu)
+                .introduction(introduction)
+                .information(information)
+                .notice(notice)
+                .fundingStatus(fundingStatus)
+                .discountPrice(discountPrice)
+                .minFundingCount(minFundingCount)
+                .maxFundingCount(maxFundingCount)
+                .nowFundingCount(nowFundingCount)
+                .startDate(startDate)
+                .endDate(endDate)
                 .build();
 
         return fundingDto;
@@ -82,23 +87,12 @@ public class Funding {
         userFunding.setFunding(this);
     }
 
+    /*
     public void setRestaurant(Restaurant restaurant){
         this.restaurant = restaurant;
         restaurant.setFunding(this);
     }
-
-
-    //==생성 메서드==// -> 연관관계 맺어주기
-    public static Funding createFunding(FundingDto fundingDto , Restaurant restaurant ,UserFunding...userFundings){
-
-        Funding funding = fundingDto.toEntity();
-        funding.setRestaurant(restaurant);
-        for (UserFunding userFunding : userFundings) {
-            funding.addUserFunding(userFunding);
-        }
-        return funding;
-
-    }
+    */
 
 
    //==비즈니스 로직==//
@@ -123,9 +117,17 @@ public class Funding {
         return false;
     }
 
+    //시작날짜가 됬는지 체크
+    public boolean checkFundingStartDate() {
+        if(this.startDate.isAfter(LocalDateTime.now())){
+            return true;
+        }
+        return false;
+    }
+
     //기간이 지났는지 체크
-    public boolean checkFundingDate(){
-        if(this.endDate.isAfter(LocalDateTime.now())){
+    public boolean checkFundingEndDate(){
+        if(this.endDate.isBefore(LocalDateTime.now())){
             return true;
         }
         return false;
@@ -162,6 +164,8 @@ public class Funding {
         return coupon;
     }
 
-
-
+    //펀딩 시작
+    public void startFunding() {
+        this.fundingStatus = FundingStatus.PROCEEDING;
+    }
 }

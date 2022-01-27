@@ -35,10 +35,14 @@
   },
   "jest": {
     "preset": "react-native"
+<<<<<<< HEAD
   },
   "proxy": "*:8080",
   "main": "index.js",
   "author": "",
   "license": "ISC",
   "description": ""
+=======
+  },"proxy" : "*:8080"
+>>>>>>> b2ef86063fae74df790f143147203725466a7a61
 }

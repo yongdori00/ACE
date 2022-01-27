@@ -10,15 +10,15 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 import RestaurantList from './RestaurantList';
 import RestaurantInformation from './RestaurantInformation';
 import Mypage from './Mypage';
 import Login from './Login';
 import Register from './Register';
 import Notice from './Notice';
-import AboutTeam from './AboutTeam';
+import Team from './Team';
 import axios from 'axios';
 
 function Seperator() {
@@ -67,7 +67,9 @@ class App extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.login}
-            onPress={() => this.props.navigation.navigate(this.state.isLoggedInPage)}>
+            onPress={() =>
+              this.props.navigation.navigate(this.state.isLoggedInPage)
+            }>
             <Text>{this.state.loginStatus}</Text>
           </TouchableOpacity>
         </View>
@@ -118,21 +120,21 @@ class App extends React.Component {
   }
 }
 
-//화면 전환 navigator
-const MainNavigator = createStackNavigator({
-  RestInfo: RestaurantInformation,
-  RestList: RestaurantList,
-  Notice: Notice,
-  Home: App,
-  Register: Register,
-  Login: Login,
-  Mypage: Mypage,
-  AboutTeam: AboutTeam,
-},
+const MainNavigator = createStackNavigator(
+  {
+    RestInfo: RestaurantInformation,
+    RestList: RestaurantList,
+    Notice: Notice,
+    Home: App,
+    Register: Register,
+    Login: Login,
+    Mypage: Mypage,
+    Team: Team,
+  },
   {
     initialRouteName: 'Home',
-  }
-)
+  },
+);
 
 //main navigator 생성자
 export default createAppContainer(MainNavigator);

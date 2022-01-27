@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoginService {
 
-    private final UserRepository memberRepository;
+    private final UserRepository userRepository;
 
     public User login(String loginId , String password){
-        System.out.println("loginId111 = " + loginId);
-        return memberRepository.findByLoginId(loginId)
+
+        return userRepository.findByLoginId(loginId)
                 .filter(m -> m.getPassword().equals(password))
                 .orElse(null);
     }

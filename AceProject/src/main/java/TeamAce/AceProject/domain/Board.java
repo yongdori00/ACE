@@ -1,16 +1,13 @@
 package TeamAce.AceProject.domain;
 
 import TeamAce.AceProject.dto.BoardDto;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends TimeEntity{
 
@@ -25,6 +22,10 @@ public class Board extends TimeEntity{
     @Lob
     private String content;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Builder
     public Board(Long id ,  String title,String content , String writer){
         this.id = id;
@@ -35,10 +36,12 @@ public class Board extends TimeEntity{
 
     public BoardDto toDto(){
         BoardDto build = BoardDto.builder()
-                .id(this.id)
-                .writer(this.writer)
-                .title(this.title)
-                .content(this.content)
+                .id(id)
+                .writer(writer)
+                .title(title)
+                .content(content)
+                .createdDate(getCreateDate())
+                .modifiedDate(getModifiedDate())
                 .build();
         return build;
     }
@@ -46,7 +49,6 @@ public class Board extends TimeEntity{
 
     //==비즈니스 로직==//
     public void updateBoard(BoardDto boardDto){
-        this.writer = boardDto.getWriter();
         this.title = boardDto.getTitle();
         this.content = boardDto.getContent();
     }
