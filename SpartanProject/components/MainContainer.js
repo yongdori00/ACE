@@ -18,6 +18,7 @@ import Mypage from './Mypage';
 import Login from './Login';
 import Register from './Register';
 import Notice from './Notice';
+import AboutTeam from './AboutTeam';
 import axios from 'axios';
 
 function Seperator() {
@@ -28,9 +29,9 @@ class App extends React.Component {
   //변경 가능한 변수 생성(생성자 이용)
   constructor(props) {
     super(props);
-    this.state = { isLoggedIn: false, isLoggedInPage: 'Login', loginStatus: '로그인/회원가입' };
+    this.state = { isLoggedIn: false, isLoggedInPage: 'Mypage', loginStatus: '마이페이지'/*isLoggedInPage: 'Login', loginStatus: '로그인/회원가입'*/ };
     this.responseData;
-    this.bannerList = [];
+    this.bannerList = [1,2,3,4,5];
   }
   render() {
     //로그인 세션 get
@@ -70,60 +71,46 @@ class App extends React.Component {
             <Text>{this.state.loginStatus}</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.list}>
-          <Button
-            title="식당"
-            color="#006894"
-            onPress={() => this.props.navigation.navigate('RestList')}
-          />
-
-          <Button
-            title="공지사항"
-            color="#009bcb"
-            onPress={() => this.props.navigation.navigate('Notice')}
-          />
-
-          <Button
-            title="팀"
-            color="#5ec1c3"
-            onPress={() => Alert.alert('팀으로 이동')}
-          />
-        </View>
         <ScrollView horizontal={false} style={styles.banner}>
           <TouchableOpacity
-            title="배너 1"
+            title="이달의 식당"
             onPress={() => Alert.alert('배너 1으로 이동')}>
             <Image
               style={styles.logo}
-              source={require('./assets/image/banner1.png')}
+              source={require('./assets/image/twomoonofvoicefood.jpg')}
             />
           </TouchableOpacity>
           <Seperator />
           <TouchableOpacity
-            title="배너 2"
-            onPress={() => Alert.alert('배너 2으로 이동')}>
+            title="할인 받자!"
+            onPress={() => this.props.navigation.navigate('RestList')}>
             <Image
               style={styles.logo}
-              source={require('./assets/image/banner1.png')}
+              source={require('./assets/image/Letsgetsales.png')}
+              resizeMode="stretch"
             />
           </TouchableOpacity>
           <Seperator />
           <TouchableOpacity
-            title="배너 3"
-            onPress={() => Alert.alert('배너 3으로 이동')}>
+            title="공지사항 확인 바랄게요~"
+            onPress={() => this.props.navigation.navigate('Notice')}>
             <Image
               style={styles.logo}
-              source={require('./assets/image/banner1.png')}
+              source={require('./assets/image/ballpaperfourhang.png')}
+              resizeMode="stretch"
             />
           </TouchableOpacity>
           <Seperator />
           <TouchableOpacity
-            title="배너 4"
-            onPress={() => Alert.alert('배너 4으로 이동')}>
+            title="team the ace!"
+            onPress={() => this.props.navigation.navigate('AboutTeam')}>
+            <View>
             <Image
               style={styles.logo}
-              source={require('./assets/image/banner1.png')}
+              source={require('./assets/image/ace.png')}
+              resizeMode="contain"
             />
+            </View>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -140,6 +127,7 @@ const MainNavigator = createStackNavigator({
   Register: Register,
   Login: Login,
   Mypage: Mypage,
+  AboutTeam: AboutTeam,
 },
   {
     initialRouteName: 'Home',

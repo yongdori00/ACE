@@ -157,6 +157,7 @@ public class UserService {
         if(findUser.isPresent()){
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
+
     }
 
     //자기가 가진 쿠폰들
@@ -186,7 +187,7 @@ public class UserService {
         List<UserFunding> userFundings = user.getUserFundings();
 
         for (UserFunding userFunding : userFundings) {
-            if(userFunding.getId() == funding.getId()){ //내가 참여할려고한 펀딩이 이미 참여해있는 펀딩이라면
+            if(userFunding.getFunding().getId() == funding.getId()){ //내가 참여할려고한 펀딩이 이미 참여해있는 펀딩이라면
                 throw new IllegalStateException("이미 참여한 펀딩입니다.");
             }
         }

@@ -1,5 +1,5 @@
 {
-  "name": "good",
+  "name": "goot",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -13,19 +13,19 @@
     "axios": "^0.24.0",
     "babel-preset-react-native": "^4.0.1",
     "react": "17.0.2",
-    "react-native": "^0.66.3",
+    "react-native": "^0.66.4",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-reanimated": "^2.2.4",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^3.3.2",
-    "react-native-screens": "^3.9.0",
+    "react-native-screens": "^3.10.2",
     "react-native-textinput-effects": "^0.4.2",
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "@babel/runtime": "^7.12.5",
+    "@babel/core": "^7.16.10",
+    "@babel/runtime": "^7.16.7",
     "@react-native-community/eslint-config": "^2.0.0",
     "babel-jest": "^26.6.3",
     "eslint": "7.14.0",
@@ -35,5 +35,10 @@
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "proxy": "*:8080",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

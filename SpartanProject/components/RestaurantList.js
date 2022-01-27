@@ -12,28 +12,83 @@ import {
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import axios from 'axios';
+import { FlatList } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default class ScrollableRestaurantList extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { order: 0, nameOfRestaurant: "", minimum: 0, maximum: 10, current: 0 };
+    this.LIMIT = 20;
+    this.loading = false;
+    /*this.data = { order: [], nameOfRestaurant: [], minimum: [], maximum: [], current: []};
+    */
+    this.state = {isLoggedIn: "", loginStatus:"마이페이지", isLoggedInPage:""};
     this.data;
+   this.offset = 0;
+   this.data = [
+    {title: '다섯번째 공지사항', writer: 'asd', date: '21-11-25'},
+    {title: '네번째 공지사항', writer: 'bbb', date: '21-11-24'},
+    {title: '세번째 공지사항', writer: 'qwe', date: '21-11-23'},
+    {title: '두번째 공지사항', writer: 'rcf', date: '21-11-22'},
+    {title: '첫번째 공지사항', writer: 'agg', date: '21-11-21'},
+    {title: '다섯번째 공지사항', writer: 'asd', date: '21-11-25'},
+    {title: '네번째 공지사항', writer: 'bbb', date: '21-11-24'},
+    {title: '세번째 공지사항', writer: 'qwe', date: '21-11-23'},
+    {title: '두번째 공지사항', writer: 'rcf', date: '21-11-22'},
+    {title: '첫번째 공지사항', writer: 'agg', date: '21-11-21'},
+   ];
   }
 
-  getData=() => {
+  //data 안에 각 변수 마다 20개짜리 배열을 넘겨줘야함.
+
+  getData = () => {
+    if(this.loading){
+      return;
+    }
+    this.loading=true;
     axios.get('/RestList')
-    .then(function (response) {
-      this.data = response.data;
-      this.state.order = this.data.order;
-      this.state.minimum = this.data.minimum;
-      this.state.maximum = this.data.maximum;
-      this.state.current = this.data.current;
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+      .then(function (response) {
+        const json_list = JSON.stringify(response.data);
+        const temporary_data = JSON.parse(json_list);
+        this.data = [...this.data, temporary_data.slice(this.offset, this.offset+LIMIT)];
+        /*this.data.order = [...this.data.order, response.data.order.slice(this.offset, this.offset+this.LIMIT)];
+        this.data.nameOfRestaurant = [...this.data.nameOfRestaurant, response.data.nameOfRestaurant.slice(this.offset, this.offset+this.LIMIT)];
+        this.data.minimum = [...this.data.minimum, response.data.minimum.slice(this.offset, this.offset+this.LIMIT)];
+        this.data.maximum = [...this.data.maximum, response.data.maximum.slice(this.offset, this.offset+this.LIMIT)];
+        this.data.current = [...this.data.current, response.data.current.slice(this.offset, this.offset+this.LIMIT)];
+        */this.offset += LIMIT;
+      })
+      .catch(function (error) {
+        this.loading=false;
+      });
   }
+
+  isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    const paddingToBottom = 20;
+    return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
+  };
+
+  renderItem = ({item}) => {
+    //플랫리스트 내부의 아이템 구성 및 데이터 전달. (터치 기능 또한 포함.)
+    return(
+    <View style={styles.stylegridView}>
+      <TouchableOpacity style={styles.card} onPress={() => 
+        this.props.navigation.navigate('RestInfo', item.nameOfRestaurant, item.minimum, item.maximum, item.current)}>
+        <Image style={styles.logo} source={{uri:item.Image}}/>
+        <View>
+          <Text >가게 이름:{item.title/*nameOfRestaurant*/}</Text>
+          <Text >최소 주문 수:{item.minimum}</Text>
+          <Text >최대 주문 수:{item.maximum}</Text>
+          <Text >현재 주문 수:{item.current}</Text>
+        </View>
+      </TouchableOpacity>
+    </View>);
+  };
+
+  onEndReached = () => {
+    this.getData();
+  };
 
   render() {
 
@@ -63,9 +118,9 @@ export default class ScrollableRestaurantList extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity>
             <Text style={styles.login}
-              onPress={() => Alert.alert('회원가입 / 로그인')}
+              onPress={() => this.props.navigation.navigate('RestList')}
             >
-              회원가입 / 로그인
+              {this.state.loginStatus}
             </Text>
           </TouchableOpacity>
         </View>
@@ -74,20 +129,23 @@ export default class ScrollableRestaurantList extends React.Component {
             식당을 선택해주세요.
           </Text>
         </View>
-        <ScrollView horizontal={false} style={styles.list} on>
-          <View style={styles.stylegridView}>
-            <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate('RestInfo')}>
-              <Image style={styles.logo} source={require('./assets/image/test.png')}
-              />
-              <View >
-                <Text >가게 이름:{this.state.nameOfRestaurant}</Text>
-                <Text >최소 주문 수:{this.state.minimum}</Text>
-                <Text >최대 주문 수:{this.state.maximum}</Text>
-                <Text >현재 주문 수:{this.state.current}</Text>
-              </View>
-            </TouchableOpacity>
+        {/*<ScrollView horizontal={false} style={styles.list} 
+          onScroll={({ nativeEvent }) => 
+            { if (isCloseToBottom(nativeEvent)) 
+            { this.getData()} 
+        }}>*/}
+        <View>
+          <FlatList
+          //View를 ScrollView로 감싸고 있어서 warning 떠서 제거 했는데 스크롤 안되면 다시 살려야함.
+          data = {this.data}
+          renderItem = {(this.renderItem)}
+          keyExtractor={item => item.id}
+          //toString이 아닐 수도 있음.
+          horizontal={false}
+          bounces={true}
+          /*onEndReached={this.onEndReached}*/
+          onEndReachedThreshold={0.6}/>
           </View>
-        </ScrollView>
       </View>
     );
   }
