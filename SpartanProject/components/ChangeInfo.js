@@ -11,7 +11,7 @@ import {
     Image,
 } from 'react-native';
 import axios from 'axios';
-import { FlatList, TextInput } from 'react-native-gesture-handler';
+import { TextInput } from 'react-native-gesture-handler';
 
 function Seperator() {
     return <View style={styles.seperator} />;
@@ -24,53 +24,23 @@ export default class App extends React.Component {
         this.state = { isLoggedIn: false
                        ,isLoggedInPage: 'Login'
                        , loginStatus: '로그인/회원가입'
-                       , coupondi: null
+                       , coupondi: null,
                        , minimum: 0
                        , maximum: 10
                        , current: 0 
-                       , info : [
+                        ,data : [
                             {id:null}
                             ,{password:null}
                             ,{email:null}
                             ,{name:null}
-                        ]
-                       , data};
+                        ]};
     }
-
-    renderCoupon = ({item}) => {
-        //플랫리스트 내부의 아이템 구성 및 데이터 전달. (터치 기능 또한 포함.)
-        return(
-        <View style={styles.stylegridView}>
-          <TouchableOpacity style={styles.card} onPress={() => 
-            this.props.navigation.navigate('RestInfo', item.nameOfRestaurant, item.minimum, item.maximum, item.current)}>
-            <Image style={styles.logo} source={{uri:item.Image}}/>
-            <View>
-              <Text >가게 이름:{item.title/*nameOfRestaurant*/}</Text>
-              <Text >최소 주문 수:{item.minimum}</Text>
-              <Text >최대 주문 수:{item.maximum}</Text>
-              <Text >현재 주문 수:{item.current}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>);
-      };
 
     useCoupon = () =>
     axios.post('./useCoupon', {
         couponId: this.couponid
     })
     ;
-
-    goBackHomeAlert = () =>
-  //홈으로 돌아갈 때 확인
-    Alert.alert('쿠폰을 사용하시겠습니까?', '확인하실 경우 환불되지 않습니다.', [
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-      //해당 부분 axios 이용해서 쿠폰 사용 이력 날려야함.
-      {text: 'OK', onPress: () => this.useCoupon},
-    ]);
-
     render() {
         //로그인 세션 get
         /*        axios.get('/')
@@ -89,16 +59,6 @@ export default class App extends React.Component {
             });
 */
         //views
-
-        
-        axios.get('./getCoupon').
-        then(function(response){
-            this.state.data = JSON.parse(response.data);
-        }).
-        catch(function (error){
-            console.log('network error');
-        });
-
         return (
             <View style={styles.container}>
                 <View style={styles.row}>
@@ -107,28 +67,11 @@ export default class App extends React.Component {
                         onPress={() => this.props.navigation.navigate('Home')}>
                         <Text> SSUFUN </Text> 
                     </TouchableOpacity>
-                </View>
-                <View>
                     <Text>
-                        Id : {this.state.info.id}{'\n'}
+                        Id : {this.state.data.id}
                     </Text>
-                    <Text>
-                        Email : {this.state.info.email}{'\n'}
-                    </Text>
-                    <Text>
-                        Name : {this.state.info.name}{'\n'}
-                    </Text>
-                </View>
-                {/*위에는 기본 정보 밑에는 보유중인 쿠폰 출력*/}
-                <View>
-                    <FlatList
-                        data = {this.state.data}
-                        renderItem = {(this.renderCoupon)}
-                        keyExtractor={item => item.id}
-                        //toString이 아닐 수도 있음.
-                        horizontal={false}
-                        bounces={true}
-                    />
+                    <TextInput placeholder={'비밀번호'}
+                               onChangeText = {(data.id) => this.setState({data.id})}/>
                 </View>
             </View>
         );

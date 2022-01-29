@@ -49,9 +49,10 @@ export default class ScrollableRestaurantList extends React.Component {
     this.loading=true;
     axios.get('/RestList')
       .then(function (response) {
-        const json_list = JSON.stringify(response.data);
-        const temporary_data = JSON.parse(json_list);
-        this.data = [...this.data, temporary_data.slice(this.offset, this.offset+LIMIT)];
+        //바로 밑의 내용은 parsing이 안되면 주석 해제해야함.
+        //const restList = JSON.stringify(response.data);
+        const restList = JSON.parse(response.data);
+        this.data = [...this.data, restList.slice(this.offset, this.offset+LIMIT)];
         /*this.data.order = [...this.data.order, response.data.order.slice(this.offset, this.offset+this.LIMIT)];
         this.data.nameOfRestaurant = [...this.data.nameOfRestaurant, response.data.nameOfRestaurant.slice(this.offset, this.offset+this.LIMIT)];
         this.data.minimum = [...this.data.minimum, response.data.minimum.slice(this.offset, this.offset+this.LIMIT)];
@@ -69,12 +70,12 @@ export default class ScrollableRestaurantList extends React.Component {
     return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
   };
 
-  renderItem = ({item}) => {
+  renderRestaurant = ({item}) => {
     //플랫리스트 내부의 아이템 구성 및 데이터 전달. (터치 기능 또한 포함.)
     return(
     <View style={styles.stylegridView}>
       <TouchableOpacity style={styles.card} onPress={() => 
-        this.props.navigation.navigate('RestInfo', item.nameOfRestaurant, item.minimum, item.maximum, item.current)}>
+        this.props.navigation.navigate('RestInfo', {nameOfRestaurant:item.nameOfRestaurant, minimum:item.minimum, maximum:item.maximum, current:item.current})}>
         <Image style={styles.logo} source={{uri:item.Image}}/>
         <View>
           <Text >가게 이름:{item.title/*nameOfRestaurant*/}</Text>
@@ -138,14 +139,14 @@ export default class ScrollableRestaurantList extends React.Component {
           <FlatList
           //View를 ScrollView로 감싸고 있어서 warning 떠서 제거 했는데 스크롤 안되면 다시 살려야함.
           data = {this.data}
-          renderItem = {(this.renderItem)}
+          renderItem = {(this.renderRestaurant)}
           keyExtractor={item => item.id}
           //toString이 아닐 수도 있음.
           horizontal={false}
           bounces={true}
           /*onEndReached={this.onEndReached}*/
           onEndReachedThreshold={0.6}/>
-          </View>
+        </View>
       </View>
     );
   }

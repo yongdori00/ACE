@@ -105,7 +105,7 @@ class App extends React.Component {
           <Seperator />
           <TouchableOpacity
             title="team the ace!"
-            onPress={() => this.props.navigation.navigate('AboutTeam')}>
+            onPress={() => this.props.navigation.navigate('Team')}>
             <View>
             <Image
               style={styles.logo}
